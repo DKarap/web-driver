@@ -1,4 +1,4 @@
 web-driver
 ==========
 
-crawler that use the webdriver, ghostdriver/phantomJS
+crawler that use the webdriver and ghostdriver/phantomJS
