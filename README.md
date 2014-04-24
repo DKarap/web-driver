@@ -1,4 +1,4 @@
 web-driver
 ==========
 
-crawler that use the webdriver and ghostdriver/phantomJS
+WebDriver is responsible for visiting urls and extracting their content(title,links,text..etc)
