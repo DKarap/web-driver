@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,7 +38,7 @@ public  class App {
     protected static DesiredCapabilities sCaps;
 
     
-    public static void main(String args[]){
+    public static void main(String args[]) throws InterruptedException{
     	
     	DesiredCapabilities caps = new DesiredCapabilities();
     	caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
@@ -46,8 +47,8 @@ public  class App {
 
     	
     	WebDriver driver = new PhantomJSDriver(caps);
-    	driver.manage().timeouts().pageLoadTimeout(1, TimeUnit.MILLISECONDS);
-    	driver.manage().timeouts().setScriptTimeout(1, TimeUnit.MILLISECONDS);
+    	driver.manage().timeouts().pageLoadTimeout(3, TimeUnit.SECONDS);
+    	driver.manage().timeouts().setScriptTimeout(3, TimeUnit.SECONDS);
     	
     	
     	long time= System.currentTimeMillis();
@@ -58,6 +59,7 @@ public  class App {
     		e.printStackTrace();
     	}
     	List<WebElement> weList = driver.findElements(By.tagName("a"));
+//    	
 //    	for(WebElement we: weList){
 //    		try{
 //    			System.out.println(we.getText()+"\t"+we.getAttribute("href"));
@@ -65,8 +67,14 @@ public  class App {
 //    		}
 //    		
 //    	}
-    	System.out.println(driver.getTitle()+"\tLinks:"+weList.size());
+    	System.out.println(driver.getTitle()+"\tUrl:"+driver.getCurrentUrl()+"\tLinks:"+weList.size());
+    	driver.findElement(By.xpath("//*[@id=\"requisitionListInterface.reqTitleLinkAction.row1\"]")).click();
+    	System.out.println(driver.getTitle()+"\tUrl:"+driver.getCurrentUrl());
+    	Thread.sleep(2000);
     	
+    	driver.navigate().back();
+    	System.out.println(driver.getTitle()+"\tUrl:"+driver.getCurrentUrl());
+    	Thread.sleep(2000);
     	
     	System.out.println("#Time:"+(System.currentTimeMillis()-time));
     	driver.quit();
