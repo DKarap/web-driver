@@ -1,50 +1,96 @@
 package org.webdriver;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.webdriver.domain.Link;
 
 
 /**
- * WebDriver is responsible for visiting urls and extracting their content(title,links,text..etc)
+ * Driver is responsible for visiting urls and extracting their content(title,links,text..etc)
  * 
  * @author Dimitrios Karapapas
  *
  */
-public interface WebDriver {
+public interface Driver {
 	
 	
 	/**
-	 * Load a new web page by the given url or index in case of (i)frame
-	 * @param url The URL to load. If is (i)frame then its index (integer)
-	 * @return true if we manage to go to the web page, otherwise false
+	 * Load a new web page by the given url
+	 * @param url the URL to load.
+	 * @return true if we manage to go to the web page, otherwise if an timeout exception happened return false
 	 */
 	public boolean get(String url);
 
 	
 	
 	/**
-	 * Load a new web page by clicking the link which is find by the given xpath
-	 * @throws NoSuchElementException - If the given element is not within a form
+	 * Load a new web page by clicking the link which is find by the given method's value
+	 * @param method the method that we use to find the link for click (xpath,name,id,etc...)
+ 	 * @param value the value of the element that we look for to click
+ 	 * @param openInNewWindow true if we want to open it in a new window..
+	 * @return true if we manage to find and click the link, otherwise false
 	 */
-	public void clickLinkByXpath(String xpath);
+	public boolean clickLink(String method, String value, boolean openInNewWindow);
 	
 	
 	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Return all the links(include iframes) of the current web page
 	 * @return list of links(include iframes) of the current web page
 	 */	
 	public List<Link> getPageLinks();
 
-	
+
+
 	/**
 	 * Return all the child links(include iframes) of the html element finding by the given xpath
 	 * @return list of child links(include iframes) of the html element finding by the given xpath
 	 */	
 	public List<Link> getElementChildLinksByXpath(String xpath);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
