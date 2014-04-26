@@ -15,7 +15,7 @@ public interface Driver {
 	
 	
 	/**
-	 * Load a new web page by the given url
+	 * Load a new web page 
 	 * @param url the URL to load.
 	 * @return true if we manage to go to the web page, otherwise if an timeout exception happened return false
 	 */
@@ -57,10 +57,17 @@ public interface Driver {
 
 
 	/**
-	 * Return all the child links(include iframes) of the html element finding by the given xpath
-	 * @return list of child links(include iframes) of the html element finding by the given xpath
+	 * Return all the child links(include iframes) of the html element finding by the given selector method and its value value
+	 * @return list of child links(include iframes) of the html element 
 	 */	
-	public List<Link> getElementChildLinksByXpath(String xpath);
+	public List<Link> getElementChildLinks(String method, String value);
+	
+	
+	
+	
+	
+	
+
 	
 	
 	
@@ -83,15 +90,13 @@ public interface Driver {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * Switch to frame 
+	 * @param method the method that we use to find the frame (index,name,etc...)
+ 	 * @param value the value of the frame that we look for to switch
+	 * @return true if we manage to switch to frame, otherwise false
+	 */
+	public boolean switchToFrame(String method, Object value);	
 	
 	
 	/**

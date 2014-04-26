@@ -99,42 +99,5 @@ public class GhostDriver extends SeleniumImpl{
         });
 
         return sCaps;
-	}
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static void main(String args[]) throws Exception{
-	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
-	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
-	    
-
-	    
-    	long time= System.currentTimeMillis();
-	    final String url = "https://www5.recruitingcenter.net/Clients/CoreLab/PublicJobs/controller.cfm";
-	    final boolean openInNewWindow = false;
-	    ghostDriver.get(url);
-	    System.out.println("Title:"+ghostDriver.getTitle()+"\tUrl:"+ghostDriver.getCurrentUrl());
-	    boolean clickSuccess = ghostDriver.clickLink("xpath","//*[@id=\"SearchJobs\"]", openInNewWindow);
-	    System.out.println("clickSuccess:"+clickSuccess+"\tTitle:"+ghostDriver.getTitle()+"\tUrl:"+ghostDriver.getCurrentUrl());
-	    clickSuccess = ghostDriver.clickLink("className","ResultLink", openInNewWindow);
-	    System.out.println("clickSuccess:"+clickSuccess+"\tTitle:"+ghostDriver.getTitle()+"\tUrl:"+ghostDriver.getCurrentUrl());
-    	System.out.println("#Time:"+(System.currentTimeMillis()-time));
-    	ghostDriver.quit();
-	}
+	}	
 }

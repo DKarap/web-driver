@@ -24,7 +24,6 @@ public class SeleniumImpl implements Driver {
 	
 	@Override
 	public String getPageSource() {
-		//TODO we may clean the code before send it back @see pageSourceCodetoUniformVersion()
 		return webDriver.getPageSource();
 	}
 
@@ -44,6 +43,22 @@ public class SeleniumImpl implements Driver {
 	}	
 	
 	@Override
+	public boolean switchToFrame(String method, Object value) {
+		try{
+			findFrame(method, value);
+		}catch(InvalidSelectorException e){
+			System.out.println("Exception durring switchToFrame:"+e.getMessage());
+			return false;
+		}catch(ClassCastException e){
+			System.out.println("Exception durring switchToFrame:"+e.getMessage());
+			return false;
+		}
+
+		
+		return true;
+	}
+	
+	@Override
 	public boolean get(String url) {
 		if(url == null || url.isEmpty())
 			return false;
@@ -56,9 +71,6 @@ public class SeleniumImpl implements Driver {
 		}
 		return true;
 	}
-	
-	
-		
 	
 	@Override
 	public boolean clickLink(String method, String value, boolean openInNewWindow) {
@@ -75,20 +87,6 @@ public class SeleniumImpl implements Driver {
 		return true;
 	}
 
-	private WebElement findElement(String method, String value){
-		WebElement we = null;
-		
-		if(method.equalsIgnoreCase("xpath"))
-			we = webDriver.findElement(By.xpath(value));
-		else if(method.equalsIgnoreCase("name"))
-			we = webDriver.findElement(By.name(value));
-		else if(method.equalsIgnoreCase("className"))
-			we = webDriver.findElement(By.className(value));
-		else
-			throw new InvalidSelectorException("Invalid method("+method+") to find an element");
-		
-		return we;
-	}
 
 	
 	
@@ -98,14 +96,44 @@ public class SeleniumImpl implements Driver {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public List<Link> getElementChildLinksByXpath(String xpath) {
-		// TODO Auto-generated method stub
+	public List<Link> getElementChildLinks(String method, String value) {
+		//WebElement we = findElement(method, value);
 		return null;
 	}
-	
 
+		
+
+	
+	
+	
+	private WebElement findElement(String method, String value) throws NoSuchElementException,InvalidSelectorException{
+		WebElement we = null;
+		
+		if(method.equalsIgnoreCase("xpath"))
+			we = webDriver.findElement(By.xpath(value));
+		else if(method.equalsIgnoreCase("name"))
+			we = webDriver.findElement(By.name(value));
+		else if(method.equalsIgnoreCase("className"))
+			we = webDriver.findElement(By.className(value));
+		else if(method.equalsIgnoreCase("linkText"))
+			we = webDriver.findElement(By.linkText(value));
+		else
+			throw new InvalidSelectorException("Invalid method("+method+") to find an element");
+		
+		return we;
+	}
+
+
+	private void findFrame(String method, Object value) throws InvalidSelectorException, ClassCastException{		
+		if(method.equalsIgnoreCase("index"))
+			webDriver.switchTo().frame((Integer)value);
+		else if(method.equalsIgnoreCase("nameOrId"))
+			webDriver.switchTo().frame((String)value);
+		else
+			throw new InvalidSelectorException("Invalid method("+method+") to find a frame");
+	}
 
 	
 }
