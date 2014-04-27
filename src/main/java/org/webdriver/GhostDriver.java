@@ -62,8 +62,6 @@ public class GhostDriver extends SeleniumImpl{
         //sCaps.setCapability("phantomjs.page.settings.resourceTimeout", sConfig.getProperty("phantomjs_page_settings_resourceTimeout"));
         sCaps.setCapability("pageLoadTimeout", sConfig.getProperty("pageLoadTimeout"));
         sCaps.setCapability("implicitlyWait", sConfig.getProperty("implicitlyWait"));
-
-        
         
         
         /*
@@ -111,15 +109,19 @@ public class GhostDriver extends SeleniumImpl{
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 	    ghostDriver.get("http://www.corelab.com/careers/job-search");
-	    ghostDriver.switchToFrame("index", 0);
 	    System.out.println(ghostDriver.getCurrentUrl());
+	    ghostDriver.switchToFrame("nameOrId", "jobSearch");
+//	    Thread.sleep(5000);
 	    
-	    List<Frame> frameList = ghostDriver.getFrames();
-	    for(Frame frame: frameList)
-	    	System.out.println(frame.getTag()+"\t"+frame.getAttributesMap().toString());
-	    List<Link> linkList = ghostDriver.getLinks();
-	    for(Link link : linkList)
-	    	System.out.println(link.getTag()+"\t"+link.getAttributesMap().toString());
+	    System.out.println(ghostDriver.getCurrentUrl());
+	    System.out.println(ghostDriver.getTitle());
+	    
+//	    List<Frame> frameList = ghostDriver.getFrames();
+//	    for(Frame frame: frameList)
+//	    	System.out.println(frame.toString());
+//	    List<Link> linkList = ghostDriver.getLinks();
+//	    for(Link link : linkList)
+//	    	System.out.println(link.toString());
 
 	    ghostDriver.quit();
 	}

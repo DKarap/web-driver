@@ -65,10 +65,13 @@ public class GhostDriverTest {
 	    
 	    boolean clickSuccess = ghostDriver.switchToFrame("nameOrId", "jobSearch");
 	    assertTrue("failed to switch to fram by nameOrId..",clickSuccess);
+    	System.out.println(ghostDriver.getTitle());
+	    System.out.println(ghostDriver.getCurrentUrl());
+	    System.out.println(ghostDriver.getPageSource());
 	    
-    	ghostDriver.get(url);
-	    clickSuccess = ghostDriver.switchToFrame("index", 0);
-	    assertTrue("failed to switch to fram by index..",clickSuccess);
+	    assertEquals("failed to switch to frame..page or functionality broke..","https://www5.recruitingcenter.net/Clients/CoreLab/PublicJobs/Canviewjobs.cfm?", ghostDriver.getCurrentUrl());
+	    assertEquals("failed to switch to frame..page or functionality broke..","Core Laboratories Job Postings", ghostDriver.getTitle());
+	    assertTrue("failed to switch to frame by index..",clickSuccess);
 
 
 	    clickSuccess = ghostDriver.switchToFrame("index", "0");

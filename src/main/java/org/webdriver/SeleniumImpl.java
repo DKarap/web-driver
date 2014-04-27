@@ -61,7 +61,7 @@ public class SeleniumImpl implements Driver {
 	}
 	
 	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement){
-			return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),Integer.parseInt(webElement.getCssValue("font-size")),Integer.parseInt(webElement.getCssValue("font-weight")),webElement.getCssValue("color"));
+			return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),webElement.getCssValue("font-size"),webElement.getCssValue("font-weight"),webElement.getCssValue("color"));
 	}
 	
 	
@@ -91,7 +91,8 @@ public class SeleniumImpl implements Driver {
 
 	@Override
 	public String getTitle() {
-		return webDriver.getTitle();
+//		return webDriver.getTitle();
+		return (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
 	}
 
 	@Override
@@ -115,8 +116,6 @@ public class SeleniumImpl implements Driver {
 			System.out.println("Exception durring switchToFrame:"+e.getMessage());
 			return false;
 		}
-
-		
 		return true;
 	}
 	
@@ -212,11 +211,24 @@ public class SeleniumImpl implements Driver {
 
 
 	private void findFrame(String method, Object value) throws InvalidSelectorException, ClassCastException{		
-		if(method.equalsIgnoreCase("index"))
-			webDriver.switchTo().frame((Integer)value);
-		else if(method.equalsIgnoreCase("nameOrId"))
+//		if(method.equalsIgnoreCase("index"))
+//			webDriver.switchTo().frame((Integer)value);
+		if(method.equalsIgnoreCase("nameOrId"))
 			webDriver.switchTo().frame((String)value);
 		else
 			throw new InvalidSelectorException("Invalid method("+method+") to find a frame");
+	}
+
+
+
+
+
+
+
+
+
+	@Override
+	public int getNumberOfOpenWindows() {
+		return webDriver.getWindowHandles().size();
 	}
 }
