@@ -61,11 +61,7 @@ public class SeleniumImpl implements Driver {
 	}
 	
 	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement){
-		System.out.println("Font size:"+webElement.getCssValue("font-size"));
-		System.out.println("Font weight:"+webElement.getCssValue("font-weight"));
-		System.out.println("color:"+webElement.getCssValue("color"));
-
-		return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed());
+			return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),Integer.parseInt(webElement.getCssValue("font-size")),Integer.parseInt(webElement.getCssValue("font-weight")),webElement.getCssValue("color"));
 	}
 	
 	
