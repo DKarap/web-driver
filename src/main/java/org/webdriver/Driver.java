@@ -101,7 +101,7 @@ public interface Driver {
 	
 	
 	
-	
+	public int getNumberOfOpenWindows();
 	
 	
 	

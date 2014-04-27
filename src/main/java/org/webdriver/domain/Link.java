@@ -62,6 +62,17 @@ public class Link extends HtmlElement{
 		this.visualInfoOfHtmlElement = visualInfoOfHtmlElement;
 	}
 
+
+	
+	@Override
+	public String toString() {
+		return "Link [anchorText=" + anchorText + ", xpath=" + xpath
+				+ ", xpathOfParentNode=" + xpathOfParentNode
+				+ ", visualInfoOfHtmlElement=" + visualInfoOfHtmlElement
+				+ ", getTag()=" + getTag() + ", getAttributesMap()="
+				+ getAttributesMap() + "]";
+	}
+
 	
 }
 

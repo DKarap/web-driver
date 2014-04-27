@@ -43,6 +43,13 @@ public class HtmlElement {
 
 	public void setAttributesMap(Map<String, String> attributesMap) {
 		this.attributesMap = attributesMap;
+	}
+
+
+	@Override
+	public String toString() {
+		return "HtmlElement [tag=" + tag + ", attributesMap=" + attributesMap
+				+ "]";
 	}	
 	
 	

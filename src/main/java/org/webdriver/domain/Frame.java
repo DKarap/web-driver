@@ -17,7 +17,11 @@ public class Frame extends HtmlElement{
 
 	public void setFrameIndex(int frameIndex) {
 		this.frameIndex = frameIndex;
+	}
+
+	@Override
+	public String toString() {
+		return "Frame [frameIndex=" + frameIndex + "]";
 	} 
-	
 	
 }

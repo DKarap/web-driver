@@ -67,7 +67,6 @@ public class GhostDriverTest {
 	    assertTrue("failed to switch to fram by nameOrId..",clickSuccess);
     	System.out.println(ghostDriver.getTitle());
 	    System.out.println(ghostDriver.getCurrentUrl());
-	    System.out.println(ghostDriver.getPageSource());
 	    
 	    assertEquals("failed to switch to frame..page or functionality broke..","https://www5.recruitingcenter.net/Clients/CoreLab/PublicJobs/Canviewjobs.cfm?", ghostDriver.getCurrentUrl());
 	    assertEquals("failed to switch to frame..page or functionality broke..","Core Laboratories Job Postings", ghostDriver.getTitle());

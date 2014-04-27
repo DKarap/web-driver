@@ -8,12 +8,12 @@ public 	class VisualInfoOfHtmlElement{
 	private final Dimension dimension;
 	private final Point point;
 	private final boolean isDisplayed;
-	private final Integer font_size;
-	private final Integer font_weight;
+	private final String font_size;
+	private final String font_weight;
 	private final String color;
 	
 	public VisualInfoOfHtmlElement(Dimension dimension, Point point,
-			boolean isDisplayed, Integer font_size, Integer font_weight,
+			boolean isDisplayed, String font_size, String font_weight,
 			String color) {
 		super();
 		this.dimension = dimension;
@@ -36,11 +36,11 @@ public 	class VisualInfoOfHtmlElement{
 		return isDisplayed;
 	}
 
-	public Integer getFont_size() {
+	public String getFont_size() {
 		return font_size;
 	}
 
-	public Integer getFont_weight() {
+	public String getFont_weight() {
 		return font_weight;
 	}
 
