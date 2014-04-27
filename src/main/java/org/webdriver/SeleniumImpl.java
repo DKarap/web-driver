@@ -1,26 +1,92 @@
 package org.webdriver;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidSelectorException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
+import org.webdriver.domain.VisualInfoOfHtmlElement;
 
 public class SeleniumImpl implements Driver {
 
 	
 	private WebDriver webDriver;
-
+    private JavascriptExecutor js;
+    
+	
+	
+	
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
 		super();
 		this.webDriver = webDriver;
+		 js = (JavascriptExecutor) webDriver;
 	}
 
+	
+	
+	
+	
+	
+
+	
+	
+	@Override
+	public List<Link> getLinks() {
+		List<Link> linkList = new ArrayList<Link>();
+		for(String linkTagName:LINK_TAG_NAME_LIST){
+			List<WebElement> elementsList = webDriver.findElements(By.tagName(linkTagName));
+			for(WebElement webElement:elementsList){
+				String tagName = webElement.getTagName();
+				String anchorText = webElement.getText();
+				//visual info of current element
+				VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
+				//get attributes Map
+				Map<String,String> elementAttrMap = getElementAttributes(webElement);
+				//TODO get the fucking XPATHS!!!
+				//construct and add link to final output list
+				linkList.add(new Link(tagName, elementAttrMap, anchorText, null, null, visualInfoOfHtmlElement));
+			}
+		}
+		return linkList;
+	}
+	
+	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement){
+		System.out.println("Font size:"+webElement.getCssValue("font-size"));
+		System.out.println("Font weight:"+webElement.getCssValue("font-weight"));
+		System.out.println("color:"+webElement.getCssValue("color"));
+
+		return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed());
+	}
+	
+	
+	@Override
+	public List<Link> getElementChildLinks(String method, String value) {
+		//WebElement we = findElement(method, value);
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@Override
 	public String getPageSource() {
@@ -87,26 +153,49 @@ public class SeleniumImpl implements Driver {
 		return true;
 	}
 
-
-	
-	
-	
 	@Override
-	public List<Link> getPageLinks() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Frame> getFrames() {
+		List<Frame> frameList = new ArrayList<Frame>();
+		int index_of_last_frame = 0;
+		for(String frameTagName:FRAME_TAG_NAME_LIST){
+			List<WebElement> elementsList = webDriver.findElements(By.tagName(frameTagName));
+			for(WebElement webElement:elementsList){
+				String tagName = webElement.getTagName();
+				//get attributes Map
+				Map<String,String> elementAttrMap = getElementAttributes(webElement);
+				//construct and add frame to final output list
+				frameList.add(new Frame(tagName, elementAttrMap, index_of_last_frame));
+				index_of_last_frame++;
+			}
+		}
+		return frameList;
 	}
 	
-	@Override
-	public List<Link> getElementChildLinks(String method, String value) {
-		//WebElement we = findElement(method, value);
-		return null;
+	
+	
+	
+
+
+	private Map<String,String> getElementAttributes(WebElement webElement){
+        Map<String,String> elementAttrMap = new HashMap<String,String>();
+        try{
+			@SuppressWarnings({ "unchecked" })
+			ArrayList<String> parentAttributes = (ArrayList<String>) js.executeScript(
+					"var s = []; var attrs = arguments[0].attributes; for (var l = 0; l < attrs.length; ++l) { var a = attrs[l]; s.push(a.name + 'mimis' + a.value); } ; return s;", webElement);
+			
+			for(String attr : parentAttributes ){
+				String[] attrArr = attr.split("mimis");
+				if(attrArr.length == 2)
+					elementAttrMap.put(attrArr[0], attrArr[1]);
+			}
+        }catch(Exception e){
+        	e.printStackTrace();
+        	return elementAttrMap;
+        }
+    	return elementAttrMap;	        
 	}
-
-		
-
 	
-	
+
 	
 	private WebElement findElement(String method, String value) throws NoSuchElementException,InvalidSelectorException{
 		WebElement we = null;
@@ -134,6 +223,4 @@ public class SeleniumImpl implements Driver {
 		else
 			throw new InvalidSelectorException("Invalid method("+method+") to find a frame");
 	}
-
-	
 }

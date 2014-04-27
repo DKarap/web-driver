@@ -2,7 +2,10 @@ package org.webdriver;
 
 import java.util.List;
 
+import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
+
+import com.google.common.collect.ImmutableSet;
 
 
 /**
@@ -13,7 +16,16 @@ import org.webdriver.domain.Link;
  */
 public interface Driver {
 	
+	public static final ImmutableSet<String> FRAME_TAG_NAME_LIST = ImmutableSet.of(
+			  "frame",
+			  "iframe");
 	
+	public static final ImmutableSet<String> LINK_TAG_NAME_LIST = ImmutableSet.of(
+			  "a",
+			  "button",
+			  "input");
+	
+
 	/**
 	 * Load a new web page 
 	 * @param url the URL to load.
@@ -49,16 +61,21 @@ public interface Driver {
 	
 	
 	/**
-	 * Return all the links(include iframes) of the current web page
-	 * @return list of links(include iframes) of the current web page
+	 * Return all the links of the current web page
+	 * @return list of links of the current web page
 	 */	
-	public List<Link> getPageLinks();
+	public List<Link> getLinks();
 
+	/**
+	 * Return all the frames of the current web page
+	 * @return list of frames of the current web page
+	 */
+	public List<Frame> getFrames();
 
 
 	/**
-	 * Return all the child links(include iframes) of the html element finding by the given selector method and its value value
-	 * @return list of child links(include iframes) of the html element 
+	 * Return all the child links of the html element finding by the given selector method and its value value
+	 * @return list of child links of the html element 
 	 */	
 	public List<Link> getElementChildLinks(String method, String value);
 	
