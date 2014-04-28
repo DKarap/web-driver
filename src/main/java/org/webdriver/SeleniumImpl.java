@@ -21,15 +21,15 @@ public class SeleniumImpl implements Driver {
 
 	
 	private WebDriver webDriver;
+	//TODO setScriptTimeout
     private JavascriptExecutor js;
-    
-	
+	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
 	
 	
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
 		super();
 		this.webDriver = webDriver;
-		 js = (JavascriptExecutor) webDriver;
+		js = (JavascriptExecutor) webDriver; 
 	}
 
 	
@@ -52,7 +52,13 @@ public class SeleniumImpl implements Driver {
 				VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
 				//get attributes Map
 				Map<String,String> elementAttrMap = getElementAttributes(webElement);
+				
 				//TODO get the fucking XPATHS!!!
+//				String elementParentXPath = XPathHelper.getXPathExpression(element.getParentNode());
+				String element =  (String) js.executeScript(" return arguments[0].toString();", webElement);
+				System.out.println(element);
+				
+				
 				//construct and add link to final output list
 				linkList.add(new Link(tagName, elementAttrMap, anchorText, null, null, visualInfoOfHtmlElement));
 			}
@@ -60,9 +66,6 @@ public class SeleniumImpl implements Driver {
 		return linkList;
 	}
 	
-	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement){
-			return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),webElement.getCssValue("font-size"),webElement.getCssValue("font-weight"),webElement.getCssValue("color"));
-	}
 	
 	
 	@Override
@@ -103,21 +106,31 @@ public class SeleniumImpl implements Driver {
 	@Override
 	public void quit() {
 		webDriver.quit();
-	}	
+	}
 	
+	@Override
+	public int getNumberOfOpenWindows() {
+		return webDriver.getWindowHandles().size();
+	}
+
 	@Override
 	public boolean switchToFrame(String method, Object value) {
 		try{
 			findFrame(method, value);
+			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
 		}catch(InvalidSelectorException e){
 			System.out.println("Exception durring switchToFrame:"+e.getMessage());
 			return false;
 		}catch(ClassCastException e){
 			System.out.println("Exception durring switchToFrame:"+e.getMessage());
 			return false;
+		} catch (InterruptedException e) {
+			System.out.println("InterruptedException during switchToFrame:"+e.getMessage());
+			return false;
 		}
 		return true;
 	}
+	
 	
 	@Override
 	public boolean get(String url) {
@@ -126,8 +139,12 @@ public class SeleniumImpl implements Driver {
 		
 		try{
 			webDriver.get(url);
+			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
 		}catch(TimeoutException timeoutException){
 			System.out.println("Timeout during page loading:"+url+"\tException:"+timeoutException.getMessage());
+			return false;
+		} catch (InterruptedException e) {
+			System.out.println("InterruptedException during page loading:"+url+"\tException:"+e.getMessage());
 			return false;
 		}
 		return true;
@@ -138,11 +155,15 @@ public class SeleniumImpl implements Driver {
 		try{
 			WebElement we = findElement(method, value);
 			we.click();
+			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
 		}catch(NoSuchElementException e){
 			System.out.println("Exception durring clickLink:"+e.getMessage());
 			return false;
 		}catch(StaleElementReferenceException e){
 			System.out.println("Exception durring clickLink:"+e.getMessage());
+			return false;
+		} catch (InterruptedException e) {
+			System.out.println("InterruptedException during clickLink:"+e.getMessage());
 			return false;
 		}
 		return true;
@@ -220,15 +241,8 @@ public class SeleniumImpl implements Driver {
 	}
 
 
-
-
-
-
-
-
-
-	@Override
-	public int getNumberOfOpenWindows() {
-		return webDriver.getWindowHandles().size();
+	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement){
+		return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),webElement.getCssValue("font-size"),webElement.getCssValue("font-weight"),webElement.getCssValue("color"));
 	}
+
 }

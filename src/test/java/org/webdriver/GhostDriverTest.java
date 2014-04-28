@@ -73,7 +73,7 @@ public class GhostDriverTest {
 	    assertTrue("failed to switch to frame by index..",clickSuccess);
 
 
-	    clickSuccess = ghostDriver.switchToFrame("index", "0");
+	    clickSuccess = ghostDriver.switchToFrame("nameOrId", 0);
 	    assertFalse("failed to throw cast exception..",clickSuccess);
 
     }

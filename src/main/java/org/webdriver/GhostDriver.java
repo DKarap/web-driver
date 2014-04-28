@@ -62,7 +62,8 @@ public class GhostDriver extends SeleniumImpl{
         //sCaps.setCapability("phantomjs.page.settings.resourceTimeout", sConfig.getProperty("phantomjs_page_settings_resourceTimeout"));
         sCaps.setCapability("pageLoadTimeout", sConfig.getProperty("pageLoadTimeout"));
         sCaps.setCapability("implicitlyWait", sConfig.getProperty("implicitlyWait"));
-        
+        sCaps.setCapability("thread_sleep_after_state_change", sConfig.getProperty("thread_sleep_after_state_change"));
+
         
         /*
          *  Fetch PhantomJS-specific configuration parameters
@@ -116,12 +117,12 @@ public class GhostDriver extends SeleniumImpl{
 	    System.out.println(ghostDriver.getCurrentUrl());
 	    System.out.println(ghostDriver.getTitle());
 	    
-//	    List<Frame> frameList = ghostDriver.getFrames();
-//	    for(Frame frame: frameList)
-//	    	System.out.println(frame.toString());
-//	    List<Link> linkList = ghostDriver.getLinks();
-//	    for(Link link : linkList)
-//	    	System.out.println(link.toString());
+	    List<Frame> frameList = ghostDriver.getFrames();
+	    for(Frame frame: frameList)
+	    	System.out.println(frame.toString());
+	    List<Link> linkList = ghostDriver.getLinks();
+	    for(Link link : linkList)
+	    	System.out.println(link.toString());
 
 	    ghostDriver.quit();
 	}
