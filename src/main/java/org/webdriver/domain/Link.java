@@ -7,17 +7,15 @@ public class Link extends HtmlElement{
 	
 	private String anchorText;
 	private String xpath;
-	private String xpathOfParentNode;
 	private VisualInfoOfHtmlElement visualInfoOfHtmlElement;
 	
 	
 	public Link(String tag, Map<String, String> attributesMap,
-			String anchorText, String xpath, String xpathOfParentNode,
+			String anchorText, String xpath,
 			VisualInfoOfHtmlElement visualInfoOfHtmlElement) {
 		super(tag, attributesMap);
 		this.anchorText = anchorText;
 		this.xpath = xpath;
-		this.xpathOfParentNode = xpathOfParentNode;
 		this.visualInfoOfHtmlElement = visualInfoOfHtmlElement;
 	}
 
@@ -42,15 +40,6 @@ public class Link extends HtmlElement{
 	}
 
 
-	public String getXpathOfParentNode() {
-		return xpathOfParentNode;
-	}
-
-
-	public void setXpathOfParentNode(String xpathOfParentNode) {
-		this.xpathOfParentNode = xpathOfParentNode;
-	}
-
 
 	public VisualInfoOfHtmlElement getVisualInfoOfHtmlElement() {
 		return visualInfoOfHtmlElement;
@@ -67,7 +56,6 @@ public class Link extends HtmlElement{
 	@Override
 	public String toString() {
 		return "Link [anchorText=" + anchorText + ", xpath=" + xpath
-				+ ", xpathOfParentNode=" + xpathOfParentNode
 				+ ", visualInfoOfHtmlElement=" + visualInfoOfHtmlElement
 				+ ", getTag()=" + getTag() + ", getAttributesMap()="
 				+ getAttributesMap() + "]";

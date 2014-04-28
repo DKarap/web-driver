@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -12,8 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.webdriver.domain.Frame;
-import org.webdriver.domain.Link;
 
 
 public class GhostDriver extends SeleniumImpl{
@@ -102,28 +99,4 @@ public class GhostDriver extends SeleniumImpl{
 
         return sCaps;
 	}	
-	
-	
-	
-	
-	public static void main(String args[]) throws Exception{
-	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
-	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
-	    ghostDriver.get("http://www.corelab.com/careers/job-search");
-	    System.out.println(ghostDriver.getCurrentUrl());
-	    ghostDriver.switchToFrame("nameOrId", "jobSearch");
-//	    Thread.sleep(5000);
-	    
-	    System.out.println(ghostDriver.getCurrentUrl());
-	    System.out.println(ghostDriver.getTitle());
-	    
-	    List<Frame> frameList = ghostDriver.getFrames();
-	    for(Frame frame: frameList)
-	    	System.out.println(frame.toString());
-	    List<Link> linkList = ghostDriver.getLinks();
-	    for(Link link : linkList)
-	    	System.out.println(link.toString());
-
-	    ghostDriver.quit();
-	}
 }

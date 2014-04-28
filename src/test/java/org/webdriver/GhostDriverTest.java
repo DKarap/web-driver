@@ -1,10 +1,15 @@
 package org.webdriver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.webdriver.domain.Link;
 
 
 public class GhostDriverTest {
@@ -75,6 +80,18 @@ public class GhostDriverTest {
 
 	    clickSuccess = ghostDriver.switchToFrame("nameOrId", 0);
 	    assertFalse("failed to throw cast exception..",clickSuccess);
+    }
+    
+    @Test
+    public void testElementXpathComputation(){
+    	final String url = "http://en.wikipedia.org/wiki/Main_Page";
+    	ghostDriver.get(url);
+	    
+	    List<Link> linkList = ghostDriver.getLinks("xpath", "//*[@id=\"p-navigation\"]/div");
+	    assertEquals("Get links failed or wikipedia changed..", 7, linkList.size());
+	    
+	    linkList = ghostDriver.getLinks("xpath", "//*[@id=\"malaka\"]/div");
+	    assertEquals("Get links failed or wikipedia changed..", 0, linkList.size());
 
     }
 }

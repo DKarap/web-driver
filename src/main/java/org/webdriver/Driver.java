@@ -46,71 +46,37 @@ public interface Driver {
 	
 	
 	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	/**
-	 * Return all the links of the current web page
-	 * @return list of links of the current web page
-	 */	
-	public List<Link> getLinks();
+	 * Return all the links of the current web page after the element which is found with the given method; if method is null then return all the links
+	 * @param method the method that we use to find the element for further looking for links
+ 	 * @param value the value of the method 
+	 * @return list of links of the current web page after a given element or all of them
+	 */
+	public List<Link> getLinks(String method, Object value);
+	
 
 	/**
-	 * Return all the frames of the current web page
+	 * Return all the frames of the current web page 
 	 * @return list of frames of the current web page
 	 */
 	public List<Frame> getFrames();
 
 
+	
+		
+	
 	/**
-	 * Return all the child links of the html element finding by the given selector method and its value value
-	 * @return list of child links of the html element 
-	 */	
-	public List<Link> getElementChildLinks(String method, String value);
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	 * @return int the number of currently open windows
+	 */
 	public int getNumberOfOpenWindows();
-	
-	
-	
 	
 	
 	/**
 	 * Switch to frame 
 	 * @param method the method that we use to find the frame (index,name,etc...)
- 	 * @param value the value of the frame that we look for to switch
+ 	 * @param value the value of the method 
 	 * @return true if we manage to switch to frame, otherwise false
 	 */
 	public boolean switchToFrame(String method, Object value);	

@@ -35,52 +35,66 @@ public class SeleniumImpl implements Driver {
 	
 	
 	
-	
-	
+	@Override
+	//TODO open new window...
+	public boolean clickLink(String method, String value, boolean openInNewWindow) {
+		try{
+			WebElement we = findElement(method, value);
+			we.click();
+			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
+		}catch(NoSuchElementException e){
+			System.out.println("Exception durring clickLink:"+e.getMessage());
+			return false;
+		}catch(StaleElementReferenceException e){
+			System.out.println("Exception durring clickLink:"+e.getMessage());
+			return false;
+		} catch (InterruptedException e) {
+			System.out.println("InterruptedException during clickLink:"+e.getMessage());
+			return false;
+		}
+		return true;
+	}
 
 	
+		
 	
 	@Override
-	public List<Link> getLinks() {
+	public List<Link> getLinks(String method, Object value) {
 		List<Link> linkList = new ArrayList<Link>();
+	
+		WebElement initialElement = null;
+		if(method != null){
+			try{
+				initialElement = findElement(method, value);
+			}catch(NoSuchElementException e){
+				System.out.println(e.getMessage());
+				return linkList;
+			}
+		}
+		else
+			initialElement = webDriver.findElement(By.tagName("body"));
+		
 		for(String linkTagName:LINK_TAG_NAME_LIST){
-			List<WebElement> elementsList = webDriver.findElements(By.tagName(linkTagName));
+			List<WebElement> elementsList = initialElement.findElements(By.tagName(linkTagName));
 			for(WebElement webElement:elementsList){
 				String tagName = webElement.getTagName();
 				String anchorText = webElement.getText();
+				
 				//visual info of current element
 				VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
+				
 				//get attributes Map
 				Map<String,String> elementAttrMap = getElementAttributes(webElement);
 				
-				//TODO get the fucking XPATHS!!!
-//				String elementParentXPath = XPathHelper.getXPathExpression(element.getParentNode());
-				String element =  (String) js.executeScript(" return arguments[0].toString();", webElement);
-				System.out.println(element);
-				
+				//get the fucking XPATHS!!
+				String xpath = getAbsoluteXpathFromWebElement(webElement);
 				
 				//construct and add link to final output list
-				linkList.add(new Link(tagName, elementAttrMap, anchorText, null, null, visualInfoOfHtmlElement));
+				linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, visualInfoOfHtmlElement));
 			}
 		}
 		return linkList;
 	}
-	
-	
-	
-	@Override
-	public List<Link> getElementChildLinks(String method, String value) {
-		//WebElement we = findElement(method, value);
-		return null;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -150,24 +164,6 @@ public class SeleniumImpl implements Driver {
 		return true;
 	}
 	
-	@Override
-	public boolean clickLink(String method, String value, boolean openInNewWindow) {
-		try{
-			WebElement we = findElement(method, value);
-			we.click();
-			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
-		}catch(NoSuchElementException e){
-			System.out.println("Exception durring clickLink:"+e.getMessage());
-			return false;
-		}catch(StaleElementReferenceException e){
-			System.out.println("Exception durring clickLink:"+e.getMessage());
-			return false;
-		} catch (InterruptedException e) {
-			System.out.println("InterruptedException during clickLink:"+e.getMessage());
-			return false;
-		}
-		return true;
-	}
 
 	@Override
 	public List<Frame> getFrames() {
@@ -186,6 +182,10 @@ public class SeleniumImpl implements Driver {
 		}
 		return frameList;
 	}
+	
+	
+	
+	
 	
 	
 	
@@ -213,17 +213,17 @@ public class SeleniumImpl implements Driver {
 	
 
 	
-	private WebElement findElement(String method, String value) throws NoSuchElementException,InvalidSelectorException{
+	private WebElement findElement(String method, Object value) throws NoSuchElementException,InvalidSelectorException{
 		WebElement we = null;
 		
 		if(method.equalsIgnoreCase("xpath"))
-			we = webDriver.findElement(By.xpath(value));
+			we = webDriver.findElement(By.xpath((String) value));
 		else if(method.equalsIgnoreCase("name"))
-			we = webDriver.findElement(By.name(value));
+			we = webDriver.findElement(By.name((String)value));
 		else if(method.equalsIgnoreCase("className"))
-			we = webDriver.findElement(By.className(value));
+			we = webDriver.findElement(By.className((String)value));
 		else if(method.equalsIgnoreCase("linkText"))
-			we = webDriver.findElement(By.linkText(value));
+			we = webDriver.findElement(By.linkText((String)value));
 		else
 			throw new InvalidSelectorException("Invalid method("+method+") to find an element");
 		
@@ -232,9 +232,9 @@ public class SeleniumImpl implements Driver {
 
 
 	private void findFrame(String method, Object value) throws InvalidSelectorException, ClassCastException{		
-//		if(method.equalsIgnoreCase("index"))
-//			webDriver.switchTo().frame((Integer)value);
-		if(method.equalsIgnoreCase("nameOrId"))
+		if(method.equalsIgnoreCase("index"))
+			webDriver.switchTo().frame((Integer)value);
+		else if(method.equalsIgnoreCase("nameOrId"))
 			webDriver.switchTo().frame((String)value);
 		else
 			throw new InvalidSelectorException("Invalid method("+method+") to find a frame");
@@ -244,5 +244,61 @@ public class SeleniumImpl implements Driver {
 	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement){
 		return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),webElement.getCssValue("font-size"),webElement.getCssValue("font-weight"),webElement.getCssValue("color"));
 	}
+	
+	
+	
+	private String getAbsoluteXpathFromWebElement(WebElement element) {
+		return (String) js.executeScript(
+						"function absoluteXPath(element) {"
+								+ "var comp, comps = [];"
+								+ "var parent = null;"
+								+ "var xpath = '';"
+								+ "var getPos = function(element) {"
+								+ "var position = 1, curNode;"
+								+ "if (element.nodeType == Node.ATTRIBUTE_NODE) {"
+								+ "return null;"
+								+ "}"
+								+ "for (curNode = element.previousSibling; curNode; curNode = curNode.previousSibling) {"
+								+ "if (curNode.nodeName == element.nodeName) {"
+								+ "++position;"
+								+ "}"
+								+ "}"
+								+ "return position;"
+								+ "};"
+								+
 
+								"if (element instanceof Document) {"
+								+ "return '/';"
+								+ "}"
+								+
+
+								"for (; element && !(element instanceof Document); element = element.nodeType == Node.ATTRIBUTE_NODE ? element.ownerElement : element.parentNode) {"
+								+ "comp = comps[comps.length] = {};"
+								+ "switch (element.nodeType) {"
+								+ "case Node.TEXT_NODE:"
+								+ "comp.name = 'text()';" + "break;"
+								+ "case Node.ATTRIBUTE_NODE:"
+								+ "comp.name = '@' + element.nodeName;"
+								+ "break;"
+								+ "case Node.PROCESSING_INSTRUCTION_NODE:"
+								+ "comp.name = 'processing-instruction()';"
+								+ "break;" + "case Node.COMMENT_NODE:"
+								+ "comp.name = 'comment()';" + "break;"
+								+ "case Node.ELEMENT_NODE:"
+								+ "comp.name = element.nodeName;" + "break;"
+								+ "}" + "comp.position = getPos(element);"
+								+ "}" +
+
+								"for (var i = comps.length - 1; i >= 0; i--) {"
+								+ "comp = comps[i];"
+								+ "xpath += '/' + comp.name.toLowerCase();"
+								+ "if (comp.position !== null) {"
+								+ "xpath += '[' + comp.position + ']';" + "}"
+								+ "}" +
+
+								"return xpath;" +
+
+								"} return absoluteXPath(arguments[0]);",
+						element);
+	}
 }
