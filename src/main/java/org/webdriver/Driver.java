@@ -17,7 +17,6 @@ public interface Driver {
 	
 	
 	
-	
 	/**
 	 * Select each option that exist after the detected (web or select or whatever) element to the one with most relevant text to the given one
 	 * @param method the method that we use to find the element which after it we will set the options to ALL, 
@@ -38,13 +37,13 @@ public interface Driver {
 	
 	
 	/**
-	 * Load a new web page by clicking the link which is find by the given method's value
-	 * @param method the method that we use to find the link for click (xpath,name,id,etc...)
+	 * Load a new web page by clicking the element which is find by the given method's value
+	 * @param method the method that we use to find the element for click (xpath,name,id,etc...)
  	 * @param value the value of the element that we look for to click
  	 * @param openInNewWindow true if we want to open it in a new window..
-	 * @return true if we manage to find and click the link, otherwise false
+	 * @return true if we manage to find and click the element, otherwise false
 	 */
-	public boolean clickLink(String method, String value, boolean openInNewWindow);
+	public boolean clickElement(String method, String value, boolean openInNewWindow);
 	
 	
 	

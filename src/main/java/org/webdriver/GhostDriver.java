@@ -100,4 +100,23 @@ public class GhostDriver extends SeleniumImpl{
         return sCaps;
 	}	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void main(String args[]) throws Exception{
+	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
+	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
+
+		final String url = "http://www.corelab.com/careers/job-search";
+    	ghostDriver.get(url);
+    	ghostDriver.clickElement("xpath", "/html/body/form/div[4]/div/div/div/div/section/div/div[2]/ul/li/a", true);
+    	System.out.println("#open windows:"+ ghostDriver.getNumberOfOpenWindows());
+    	System.out.println("#current url:"+ ghostDriver.getCurrentUrl());
+	    ghostDriver.quit();
+	}
 }

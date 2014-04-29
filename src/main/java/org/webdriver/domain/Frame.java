@@ -21,7 +21,11 @@ public class Frame extends HtmlElement{
 
 	@Override
 	public String toString() {
-		return "Frame [frameIndex=" + frameIndex + "]";
-	} 
+		return "Frame [frameIndex=" + frameIndex + ", getTag()=" + getTag()
+				+ ", getAttributesMap()=" + getAttributesMap()
+				+ ", toString()=" + super.toString() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + "]";
+	}
+
 	
 }

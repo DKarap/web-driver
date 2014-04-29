@@ -34,21 +34,6 @@ public class SeleniumImpl implements Driver {
 
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public void selectOptions(String method, String value, Collection<String> textToSelect) {
 		WebElement initialElement = null;
@@ -75,27 +60,18 @@ public class SeleniumImpl implements Driver {
 
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-	
-	
 	@Override
-	//TODO open new window...
-	public boolean clickLink(String method, String value, boolean openInNewWindow) {
+	public boolean clickElement(String method, String value, boolean openInNewWindow) {
 		try{
+			
 			WebElement we = findElement(method, value);
+			if(openInNewWindow){
+				js.executeScript("arguments[0].setAttribute('target', '_blank');", we);
+			}
 			we.click();
+			//wait some time to load..
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
+			
 		}catch(NoSuchElementException e){
 			System.out.println("Exception durring clickLink:"+e.getMessage());
 			return false;

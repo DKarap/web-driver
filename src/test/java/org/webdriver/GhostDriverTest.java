@@ -64,13 +64,13 @@ public class GhostDriverTest {
     	final String url = "http://en.wikipedia.org/wiki/Main_Page";
     	ghostDriver.get(url);
         
-	    boolean clickSuccess = ghostDriver.clickLink("linkText","Main page", openInNewWindow);
+	    boolean clickSuccess = ghostDriver.clickElement("linkText","Main page", openInNewWindow);
 	    assertTrue("failed to find link..",clickSuccess);
 	    
-	    clickSuccess = ghostDriver.clickLink("xpath","//*[@id=\"n-mainpage-description\"]/a", openInNewWindow);
+	    clickSuccess = ghostDriver.clickElement("xpath","//*[@id=\"n-mainpage-description\"]/a", openInNewWindow);
 	    assertTrue("failed to find element by xpath..",clickSuccess);
 	    
-	    clickSuccess = ghostDriver.clickLink("malaka","Main page", openInNewWindow);
+	    clickSuccess = ghostDriver.clickElement("malaka","Main page", openInNewWindow);
 	    assertFalse("failed to throw selector exception..",clickSuccess);
 
     }
@@ -125,7 +125,7 @@ public class GhostDriverTest {
 
 		final ImmutableSet<String> OptionSelectALLRelevantTerms = ImmutableSet.of("armenia");
 	    ghostDriver.selectOptions("tagName", "body", OptionSelectALLRelevantTerms);
-	    ghostDriver.clickLink("xpath", "//*[@id=\"advancedSearchFooterInterface.searchAction\"]", false);
+	    ghostDriver.clickElement("xpath", "//*[@id=\"advancedSearchFooterInterface.searchAction\"]", false);
 	    List<Link> linkListAfter = ghostDriver.getLinks("xpath", "//*[@id=\"requisitionListInterface.listRequisitionContainer\"]",LINK_TAG_NAME_LIST);
 	    
 	    System.out.println( linkListBefore.size()+"\t"+linkListAfter.size());
