@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +35,44 @@ public class SeleniumImpl implements Driver {
 
 	
 	
+
+	
+	@Override
+	public List<Link> getLinks(String method, Object value, Collection<String> LINK_TAG_NAME_LIST) {
+		List<Link> linkList = new ArrayList<Link>();
+		
+		WebElement initialElement = null;
+		try{
+			initialElement = findElement(method, value);
+		}catch(NoSuchElementException e){
+			System.out.println(e.getMessage());
+			return linkList;
+		}
+		
+		
+		for(String linkTagName:LINK_TAG_NAME_LIST){
+			List<WebElement> elementsList = initialElement.findElements(By.tagName(linkTagName));
+			for(WebElement webElement:elementsList){
+				String tagName = webElement.getTagName();
+				String anchorText = webElement.getText();
+				
+				//visual info of current element
+				VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
+				
+				//get attributes Map
+				Map<String,String> elementAttrMap = getElementAttributes(webElement);
+				
+				//get the fucking XPATHS!!
+				String xpath = getAbsoluteXpathFromWebElement(webElement);
+				
+				//construct and add link to final output list
+				linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, visualInfoOfHtmlElement));
+			}
+		}
+		return linkList;
+	}
+	
+
 	@Override
 	public void selectOptions(String method, String value, Collection<String> textToSelect) {
 		WebElement initialElement = null;
@@ -86,79 +125,22 @@ public class SeleniumImpl implements Driver {
 	}
 
 	
-		
-	
-	@Override
-	public List<Link> getLinks(String method, Object value, Collection<String> LINK_TAG_NAME_LIST) {
-		List<Link> linkList = new ArrayList<Link>();
-		
-		WebElement initialElement = null;
-		try{
-			initialElement = findElement(method, value);
-		}catch(NoSuchElementException e){
-			System.out.println(e.getMessage());
-			return linkList;
-		}
-		
-		for(String linkTagName:LINK_TAG_NAME_LIST){
-			List<WebElement> elementsList = initialElement.findElements(By.tagName(linkTagName));
-			for(WebElement webElement:elementsList){
-				String tagName = webElement.getTagName();
-				String anchorText = webElement.getText();
-				
-				//visual info of current element
-				VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
-				
-				//get attributes Map
-				Map<String,String> elementAttrMap = getElementAttributes(webElement);
-				
-				//get the fucking XPATHS!!
-				String xpath = getAbsoluteXpathFromWebElement(webElement);
-				
-				//construct and add link to final output list
-				linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, visualInfoOfHtmlElement));
-			}
-		}
-		return linkList;
-	}
-	
-	
-	
-	
-	
-	
-	@Override
-	public String getPageSource() {
-		return webDriver.getPageSource();
-	}
-
-	@Override
-	public String getTitle() {
-//		return webDriver.getTitle();
-		return (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
-	}
-
-	@Override
-	public String getCurrentUrl() {
-		return webDriver.getCurrentUrl();
-	}
-
-	@Override
-	public void quit() {
-		webDriver.quit();
-	}
-	
-	@Override
-	public int getNumberOfOpenWindows() {
-		return webDriver.getWindowHandles().size();
-	}
-
 	@Override
 	public boolean switchToFrame(String method, Object value) {
 		try{
-			findFrame(method, value);
+			
+			if(method.equalsIgnoreCase("index"))
+				webDriver.switchTo().frame((Integer)value);
+			else if(method.equalsIgnoreCase("nameOrId"))
+				webDriver.switchTo().frame((String)value);
+			else{
+				System.out.println("Invalid method("+method+") to find a frame");
+				return false;
+			}
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
-		}catch(InvalidSelectorException e){
+			
+			
+		}catch(NoSuchFrameException e){
 			System.out.println("Exception durring switchToFrame:"+e.getMessage());
 			return false;
 		}catch(ClassCastException e){
@@ -170,6 +152,8 @@ public class SeleniumImpl implements Driver {
 		}
 		return true;
 	}
+	
+	
 	
 	
 	@Override
@@ -211,7 +195,32 @@ public class SeleniumImpl implements Driver {
 	
 	
 	
+	@Override
+	public String getPageSource() {
+		return webDriver.getPageSource();
+	}
+
+	@Override
+	public String getTitle() {
+//		return webDriver.getTitle();
+		return (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
+	}
+
+	@Override
+	public String getCurrentUrl() {
+		return webDriver.getCurrentUrl();
+	}
+
+	@Override
+	public void quit() {
+		webDriver.quit();
+	}
 	
+	@Override
+	public int getNumberOfOpenWindows() {
+		return webDriver.getWindowHandles().size();
+	}
+
 	
 	
 	
@@ -258,14 +267,7 @@ public class SeleniumImpl implements Driver {
 	}
 
 
-	private void findFrame(String method, Object value) throws InvalidSelectorException, ClassCastException{		
-		if(method.equalsIgnoreCase("index"))
-			webDriver.switchTo().frame((Integer)value);
-		else if(method.equalsIgnoreCase("nameOrId"))
-			webDriver.switchTo().frame((String)value);
-		else
-			throw new InvalidSelectorException("Invalid method("+method+") to find a frame");
-	}
+	
 
 
 	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement){

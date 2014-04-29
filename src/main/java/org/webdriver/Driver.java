@@ -19,6 +19,7 @@ public interface Driver {
 	
 	/**
 	 * Select each option that exist after the detected (web or select or whatever) element to the one with most relevant text to the given one
+	 * TODO HACK: in case we want to select only the ALL option then we can check only the first option from each select since this is the place where exist normaly
 	 * @param method the method that we use to find the element which after it we will set the options to ALL, 
  	 * @param value the value of the method
   	 * @param textToSelect list of text(synonims) that we look for to select  
@@ -54,7 +55,7 @@ public interface Driver {
 	 * @param method the method that we use to find the element for further looking for links
  	 * @param value the value of the method 
  	 * @param LINK_TAG_NAME_LIST list of tag names that we want to retrieve
-	 * @return list of links of the current web page after a given element or all of them
+	 * @return list of links of the current web page after a given element or all of them; if element cannot be find then return an empty list
 	 */
 	public List<Link> getLinks(String method, Object value, Collection<String> LINK_TAG_NAME_LIST);
 	
@@ -68,13 +69,6 @@ public interface Driver {
 
 
 	
-		
-	
-	/**
-	 * @return int the number of currently open windows
-	 */
-	public int getNumberOfOpenWindows();
-	
 	
 	/**
 	 * Switch to frame 
@@ -83,7 +77,14 @@ public interface Driver {
 	 * @return true if we manage to switch to frame, otherwise false
 	 */
 	public boolean switchToFrame(String method, Object value);	
+
 	
+	
+	/**
+	 * @return int the number of currently open windows
+	 */
+	public int getNumberOfOpenWindows();
+
 	
 	/**
 	 * Get the source of the last loaded page.	 
