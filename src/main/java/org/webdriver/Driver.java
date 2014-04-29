@@ -1,11 +1,10 @@
 package org.webdriver;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
-
-import com.google.common.collect.ImmutableSet;
 
 
 /**
@@ -16,16 +15,19 @@ import com.google.common.collect.ImmutableSet;
  */
 public interface Driver {
 	
-	public static final ImmutableSet<String> FRAME_TAG_NAME_LIST = ImmutableSet.of(
-			  "frame",
-			  "iframe");
 	
-	public static final ImmutableSet<String> LINK_TAG_NAME_LIST = ImmutableSet.of(
-			  "a",
-			  "button",
-			  "input");
 	
-
+	
+	/**
+	 * Select each option that exist after the detected (web or select or whatever) element to the one with most relevant text to the given one
+	 * @param method the method that we use to find the element which after it we will set the options to ALL, 
+ 	 * @param value the value of the method
+  	 * @param textToSelect list of text(synonims) that we look for to select  
+	 */
+	public void selectOptions(String method, String value, Collection<String> textToSelect);
+	
+	
+	
 	/**
 	 * Load a new web page 
 	 * @param url the URL to load.
@@ -49,19 +51,21 @@ public interface Driver {
 	
 	
 	/**
-	 * Return all the links of the current web page after the element which is found with the given method; if method is null then return all the links
+	 * Return all the links of the current web page after the element which is found with the given method;if we want all the links then simply choose the body element by tag name 
 	 * @param method the method that we use to find the element for further looking for links
  	 * @param value the value of the method 
+ 	 * @param LINK_TAG_NAME_LIST list of tag names that we want to retrieve
 	 * @return list of links of the current web page after a given element or all of them
 	 */
-	public List<Link> getLinks(String method, Object value);
+	public List<Link> getLinks(String method, Object value, Collection<String> LINK_TAG_NAME_LIST);
 	
 
 	/**
-	 * Return all the frames of the current web page 
+	 * Return all the frames of the current web page
+	 * @param  FRAME_TAG_NAME_LIST list of tag names that we consider frames
 	 * @return list of frames of the current web page
 	 */
-	public List<Frame> getFrames();
+	public List<Frame> getFrames(Collection<String> FRAME_TAG_NAME_LIST);
 
 
 	

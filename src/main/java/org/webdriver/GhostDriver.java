@@ -99,4 +99,5 @@ public class GhostDriver extends SeleniumImpl{
 
         return sCaps;
 	}	
+	
 }

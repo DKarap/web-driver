@@ -1,6 +1,7 @@
 package org.webdriver;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,7 @@ public class SeleniumImpl implements Driver {
 
 	
 	private WebDriver webDriver;
-	//TODO setScriptTimeout
-    private JavascriptExecutor js;
+    private JavascriptExecutor js; //TODO setScriptTimeout
 	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
 	
 	
@@ -33,6 +33,60 @@ public class SeleniumImpl implements Driver {
 	}
 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public void selectOptions(String method, String value, Collection<String> textToSelect) {
+		WebElement initialElement = null;
+		try{
+			initialElement = findElement(method, value);
+		}catch(NoSuchElementException e){
+			System.out.println(e.getMessage());
+			return;
+		}
+		
+		List<WebElement> selectElementList = initialElement.findElements(By.tagName("select"));
+		for(WebElement selectElement : selectElementList){
+			List<WebElement> allCurrentOptions = selectElement.findElements(By.tagName("option"));
+			for (WebElement option : allCurrentOptions) {
+				String currentOptionText = option.getText().toLowerCase().trim();
+				if(textToSelect.contains(currentOptionText)){
+//				if(optionText.matches("(.*\\s+?\\W{0,1}|^\\W{0,1})"+rel+"(\\W{0,1}\\s+?.*|\\W{0,1}$)")){
+					option.click();
+					break;
+				}
+			}
+		}
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
 	
 	
 	@Override
@@ -59,20 +113,16 @@ public class SeleniumImpl implements Driver {
 		
 	
 	@Override
-	public List<Link> getLinks(String method, Object value) {
+	public List<Link> getLinks(String method, Object value, Collection<String> LINK_TAG_NAME_LIST) {
 		List<Link> linkList = new ArrayList<Link>();
-	
+		
 		WebElement initialElement = null;
-		if(method != null){
-			try{
-				initialElement = findElement(method, value);
-			}catch(NoSuchElementException e){
-				System.out.println(e.getMessage());
-				return linkList;
-			}
+		try{
+			initialElement = findElement(method, value);
+		}catch(NoSuchElementException e){
+			System.out.println(e.getMessage());
+			return linkList;
 		}
-		else
-			initialElement = webDriver.findElement(By.tagName("body"));
 		
 		for(String linkTagName:LINK_TAG_NAME_LIST){
 			List<WebElement> elementsList = initialElement.findElements(By.tagName(linkTagName));
@@ -166,7 +216,7 @@ public class SeleniumImpl implements Driver {
 	
 
 	@Override
-	public List<Frame> getFrames() {
+	public List<Frame> getFrames(Collection<String> FRAME_TAG_NAME_LIST) {
 		List<Frame> frameList = new ArrayList<Frame>();
 		int index_of_last_frame = 0;
 		for(String frameTagName:FRAME_TAG_NAME_LIST){
@@ -215,9 +265,10 @@ public class SeleniumImpl implements Driver {
 	
 	private WebElement findElement(String method, Object value) throws NoSuchElementException,InvalidSelectorException{
 		WebElement we = null;
-		
 		if(method.equalsIgnoreCase("xpath"))
 			we = webDriver.findElement(By.xpath((String) value));
+		else if(method.equalsIgnoreCase("tagName"))
+			we = webDriver.findElement(By.tagName((String) value));
 		else if(method.equalsIgnoreCase("name"))
 			we = webDriver.findElement(By.name((String)value));
 		else if(method.equalsIgnoreCase("className"))
@@ -301,4 +352,5 @@ public class SeleniumImpl implements Driver {
 								"} return absoluteXPath(arguments[0]);",
 						element);
 	}
+
 }
