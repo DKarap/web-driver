@@ -114,7 +114,7 @@ public class GhostDriver extends SeleniumImpl{
 
 		final String url = "http://www.corelab.com/careers/job-search";
     	ghostDriver.get(url);
-    	ghostDriver.clickElement("xpath", "/html/body/form/div[4]/div/div/div/div/section/div/div[2]/ul/li/a", true);
+    	ghostDriver.clickElement("xpath", "//*[@id=\"ctl00_ctl00_CoreMasterContentPlaceHolder_CorpMenu\"]/ul/li[1]/a", true);
     	System.out.println("#open windows:"+ ghostDriver.getNumberOfOpenWindows());
     	System.out.println("#current url:"+ ghostDriver.getCurrentUrl());
 	    ghostDriver.quit();

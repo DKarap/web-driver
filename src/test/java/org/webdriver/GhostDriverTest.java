@@ -58,6 +58,7 @@ public class GhostDriverTest {
     }
     
     
+    
     @Test
     public void testClickLink(){
     	final boolean openInNewWindow = false;
@@ -73,6 +74,11 @@ public class GhostDriverTest {
 	    clickSuccess = ghostDriver.clickElement("malaka","Main page", openInNewWindow);
 	    assertFalse("failed to throw selector exception..",clickSuccess);
 
+	    
+
+    	ghostDriver.get(url);
+    	ghostDriver.clickElement("xpath", "//*[@id=\"n-mainpage-description\"]/a", true);
+	    assertEquals("failed to open page in new window..",2,ghostDriver.getNumberOfOpenWindows());
     }
     
     @Test
