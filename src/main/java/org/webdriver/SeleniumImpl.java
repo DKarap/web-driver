@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -120,7 +121,11 @@ public class SeleniumImpl implements Driver {
 		} catch (InterruptedException e) {
 			System.out.println("InterruptedException during clickLink:"+e.getMessage());
 			return false;
+		} catch (ElementNotVisibleException e) {
+			System.out.println("org.openqa.selenium.ElementNotVisibleException during clickLink:"+e.getMessage());
+			return false;
 		}
+
 		return true;
 	}
 

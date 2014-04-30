@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.webdriver.domain.Link;
 
 
 public class GhostDriver extends SeleniumImpl{
@@ -112,11 +115,15 @@ public class GhostDriver extends SeleniumImpl{
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
-		final String url = "http://www.corelab.com/careers/job-search";
+		final String url = "http://www.pon.com/werken-bij-pon/actuele-vacatures.28.lynkx";
     	ghostDriver.get(url);
-    	ghostDriver.clickElement("xpath", "//*[@id=\"ctl00_ctl00_CoreMasterContentPlaceHolder_CorpMenu\"]/ul/li[1]/a", true);
+    	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("a"));
+    	ghostDriver.clickElement("xpath", "//*[@id=\"site-sidepanel\"]/div[2]/div/div[3]/div[1]/a", true);
     	System.out.println("#open windows:"+ ghostDriver.getNumberOfOpenWindows());
     	System.out.println("#current url:"+ ghostDriver.getCurrentUrl());
+    	System.out.println("#links:"+ links.size());
+    	for(Link l:links)
+    		System.out.println(l.toString());
 	    ghostDriver.quit();
 	}
 }
