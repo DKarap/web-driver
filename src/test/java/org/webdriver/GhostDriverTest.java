@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.webdriver.core.Driver;
+import org.webdriver.core.GhostDriver;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 

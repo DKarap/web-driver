@@ -1,4 +1,4 @@
-package org.webdriver;
+package org.webdriver.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
