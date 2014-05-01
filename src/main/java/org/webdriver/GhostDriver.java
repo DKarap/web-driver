@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -115,15 +116,27 @@ public class GhostDriver extends SeleniumImpl{
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
-		final String url = "http://www.pon.com/werken-bij-pon/actuele-vacatures.28.lynkx";
+		final String url = "http://www.iir.nl/vacatures/";
+		
     	ghostDriver.get(url);
-    	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("a"));
-    	ghostDriver.clickElement("xpath", "//*[@id=\"site-sidepanel\"]/div[2]/div/div[3]/div[1]/a", true);
-    	System.out.println("#open windows:"+ ghostDriver.getNumberOfOpenWindows());
-    	System.out.println("#current url:"+ ghostDriver.getCurrentUrl());
+    	try{
+//    		ghostDriver.clickElement("tagName", "a", true);
+//    		ghostDriver.switchToFrame("sss", 1);
+//    		List<Frame> f = ghostDriver.getFrames(Arrays.asList("iframe"));
+//    		System.out.println(f.size());
+//	    	ghostDriver.selectOptions("tagName", "body", Arrays.asList("select"));
+//	    	ghostDriver.getPageSource();
+//	    	System.out.println("#current title:"+ ghostDriver.getTitle());
+//	    	System.out.println("#current url:"+ ghostDriver.getCurrentUrl());
+    	}catch(WebDriverException e){
+    		e.printStackTrace();
+    	}
+    	
+    	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("input"));//    	
     	System.out.println("#links:"+ links.size());
     	for(Link l:links)
     		System.out.println(l.toString());
+    	
 	    ghostDriver.quit();
 	}
 }
