@@ -116,7 +116,7 @@ public class GhostDriver extends SeleniumImpl{
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
-		final String url = "http://www.iir.nl/vacatures/";
+		final String url = "http://www.degoudenleeuwgroep.nl/vacatures";
 		
     	ghostDriver.get(url);
     	try{
@@ -132,10 +132,10 @@ public class GhostDriver extends SeleniumImpl{
     		e.printStackTrace();
     	}
     	
-    	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("input"));//    	
+    	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("a"));//    	
     	System.out.println("#links:"+ links.size());
     	for(Link l:links)
-    		System.out.println(l.toString());
+    		System.out.println(l.getXpath() +"\t"+l.getText());
     	
 	    ghostDriver.quit();
 	}
