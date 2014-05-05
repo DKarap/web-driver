@@ -6,6 +6,7 @@ import java.util.List;
 import org.openqa.selenium.WebDriverException;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
+import org.webdriver.domain.WebPage;
 
 
 /**
@@ -17,9 +18,19 @@ import org.webdriver.domain.Link;
  *
  */
 public interface Driver {
-	
-	
 
+	/**
+	 * get the WebPage that the driver currently points to
+	 * @param id the id of the page; can be the a random one or the number of result list page that the driver points to
+	 * @param  FRAME_TAG_NAME_LIST list of tag names that we consider frames
+ 	 * @param LINK_TAG_NAME_LIST list of tag names that we want to retrieve
+	 * @return WebPage an object with all the info the driver can extarct from a webpage 
+ 	 * @throws WebDriverException If something fucked up happened with the webdriver
+	 */
+	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST);
+
+	
+	
 	/**
 	 * Load a new web page 
 	 * @param url the URL to load.

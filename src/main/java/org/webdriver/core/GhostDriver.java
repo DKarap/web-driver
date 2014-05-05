@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 
 
@@ -116,27 +117,45 @@ public class GhostDriver extends SeleniumImpl{
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
-		final String url = "http://www.degoudenleeuwgroep.nl/vacatures";
+		final String url = "http://bethefuture.nl/vacatures-2/";
 		
-    	ghostDriver.get(url);
-    	try{
-//    		ghostDriver.clickElement("tagName", "a", true);
-//    		ghostDriver.switchToFrame("sss", 1);
-//    		List<Frame> f = ghostDriver.getFrames(Arrays.asList("iframe"));
-//    		System.out.println(f.size());
-//	    	ghostDriver.selectOptions("tagName", "body", Arrays.asList("select"));
-//	    	ghostDriver.getPageSource();
-//	    	System.out.println("#current title:"+ ghostDriver.getTitle());
-//	    	System.out.println("#current url:"+ ghostDriver.getCurrentUrl());
-    	}catch(WebDriverException e){
+
+		try{
+        	//1. get page
+        	System.out.println("\tgeturl");
+    		ghostDriver.get(url);
+    		//2. get page source code
+    		System.out.println("\tgetpagesource");
+    		ghostDriver.getPageSource();
+    		//3. get title
+    		System.out.println("\tgettitle");
+    		ghostDriver.getTitle();
+    		//3. get current url
+    		System.out.println("\tget current url");
+    		ghostDriver.getCurrentUrl();
+        	System.out.println("\turl:"+ghostDriver.getCurrentUrl());
+    		//4. get links
+    		System.out.println("\tget links");
+        	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("a"));
+        	System.out.println("\t#links:"+ links.size());
+        	for(Link l:links)
+        		System.out.println( l.getAttributesMap().get("href")  +"\t" + l.getVisualInfoOfHtmlElement().toString() +"\t" +l.getText());
+
+    		//5. get frames
+        	System.out.println("\tget frames");
+        	List<Frame> frames = ghostDriver.getFrames( Arrays.asList("frame","iframe"));
+        	System.out.println("\t#frames:"+ frames.size());
+        	//6. switch to frame
+        	System.out.println("\tswitch to frame");
+        	if(frames.size()>0){
+        		ghostDriver.switchToFrame("index", frames.get(0).getFrameIndex());
+        	}
+        	
+
+
+		}catch(WebDriverException e){
     		e.printStackTrace();
     	}
-    	
-    	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("a"));//    	
-    	System.out.println("#links:"+ links.size());
-    	for(Link l:links)
-    		System.out.println(l.getXpath() +"\t"+l.getText());
-    	
 	    ghostDriver.quit();
 	}
 }

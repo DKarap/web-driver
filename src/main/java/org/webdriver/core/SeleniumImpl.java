@@ -20,6 +20,7 @@ import org.openqa.selenium.WebElement;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 import org.webdriver.domain.VisualInfoOfHtmlElement;
+import org.webdriver.domain.WebPage;
 
 public class SeleniumImpl implements Driver {
 
@@ -33,6 +34,15 @@ public class SeleniumImpl implements Driver {
 		super();
 		this.webDriver = webDriver;
 		js = (JavascriptExecutor) webDriver; 
+	}
+
+	
+	@Override
+	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST) throws WebDriverException {
+		String url = getCurrentUrl();
+		String title = getTitle();
+		String sourceCode = getPageSource();
+		return new WebPage(id, url, title, sourceCode, getFrames(FRAME_TAG_NAME_LIST), getLinks("tagName", "body", LINK_TAG_NAME_LIST));
 	}
 
 	

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
@@ -13,6 +14,7 @@ import org.webdriver.core.Driver;
 import org.webdriver.core.GhostDriver;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
+import org.webdriver.domain.WebPage;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -139,4 +141,17 @@ public class GhostDriverTest {
 	    System.out.println( linkListBefore.size()+"\t"+linkListAfter.size());
 	    assertTrue("Select Option broke..",linkListBefore.size() > linkListAfter.size());
     }
+    
+    
+    @Test
+    public void testWebPage(){
+    	final String url = "http://en.wikipedia.org/wiki/Main_Page";
+    	ghostDriver.get(url);
+	    
+    	WebPage webPage = ghostDriver.getCurrentWebPage(1, Arrays.asList("frame"), Arrays.asList("a"));
+    	
+    	assertEquals("getWebPage title broke..", "Wikipedia, the free encyclopedia", webPage.getTitle());
+    	assertEquals("getWebPage url broke..", "http://en.wikipedia.org/wiki/Main_Page", webPage.getUrl());    	
+    }
+
 }
