@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 
 public class Helper {
 
-	
+
 	public static String getAbsoluteXpathFromWebElement0(WebElement webElement, JavascriptExecutor js){
 		String xpath =  (String) js.executeScript(XPATH_FIREBUG_COMPUTATION_JAVASCRIPT, webElement);
 		return xpath;

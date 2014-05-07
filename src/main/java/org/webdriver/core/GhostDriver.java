@@ -117,13 +117,20 @@ public class GhostDriver extends SeleniumImpl{
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
-		final String url = "http://bethefuture.nl/vacatures-2/";
-		
+//		final String url = "http://bethefuture.nl/vacatures-2/";
+		final String url = "http://weblog.independer.nl/vacature/";
 
 		try{
         	//1. get page
         	System.out.println("\tgeturl");
     		ghostDriver.get(url);
+    		
+    		boolean success = ghostDriver.clickElement("xpath", "/HTML[1]/BODY[1]/DIV[1]/DIV[4]/DIV[2]/DIV[1]/DIV[1]/H3[1]/A[1]", true);
+    		System.out.println("\tsuccess:"+success+"\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
+    		ghostDriver.closeAllOtherOpenWindows();
+    		System.out.println("\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
+    		
+    		
     		//2. get page source code
     		System.out.println("\tgetpagesource");
     		ghostDriver.getPageSource();
@@ -139,7 +146,7 @@ public class GhostDriver extends SeleniumImpl{
         	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("a"));
         	System.out.println("\t#links:"+ links.size());
         	for(Link l:links)
-        		System.out.println( l.getAttributesMap().get("href")  +"\t" + l.getVisualInfoOfHtmlElement().toString() +"\t" +l.getText());
+        		System.out.println(l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText());
 
     		//5. get frames
         	System.out.println("\tget frames");
@@ -150,7 +157,8 @@ public class GhostDriver extends SeleniumImpl{
         	if(frames.size()>0){
         		ghostDriver.switchToFrame("index", frames.get(0).getFrameIndex());
         	}
-        	
+    		System.out.println("\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
+
 
 
 		}catch(WebDriverException e){

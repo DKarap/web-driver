@@ -70,6 +70,25 @@ public class SeleniumImpl implements Driver {
 		return webDriver.getWindowHandles().size();
 	}
 
+	
+	@Override
+	public void closeAllOtherOpenWindows() throws WebDriverException{
+    	String current = this.webDriver.getWindowHandle();
+        for (String handle : this.webDriver.getWindowHandles()) {
+        	if (!handle.equals(current)) {
+        		
+        		this.webDriver.switchTo().window(handle);
+        		System.out.println("opened window:"+getCurrentUrl());
+//				closeAlerts();
+
+                this.webDriver.close();
+                this.webDriver.switchTo().window(current);
+                System.out.println("current:"+getCurrentUrl());
+//				closeAlerts();
+            }
+        }
+	}
+
 
 	
 	@Override

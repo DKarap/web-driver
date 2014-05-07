@@ -48,6 +48,15 @@ public interface Driver {
 
 	
 	/**
+	 * Close all the open windows except of the current one 
+	 * @throws WebDriverException If something fucked up happened with the webdriver
+	 * @throws NoSuchWindowException If the window cannot be found 
+	 */
+	public void closeAllOtherOpenWindows();
+
+	
+	
+	/**
 	 * Get the source of the last loaded page.	 
 	 * @return the source of the last loaded page
 	 * @throws WebDriverException If something fucked up happened with the webdriver
@@ -118,7 +127,7 @@ public interface Driver {
 	
 	
 	/**
-	 * Load a new web page by clicking the element which is find by the given method's value
+	 * open a new web page by clicking the element which is find by the given method's value - ATTENTION: the driver is still points to the initial window and not in the new one!
 	 * @param method the method that we use to find the element for click (xpath,name,id,etc...)
  	 * @param value the value of the element that we look for to click
  	 * @param openInNewWindow true if we want to open it in a new window..

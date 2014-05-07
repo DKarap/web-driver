@@ -83,6 +83,11 @@ public class GhostDriverTest {
     	ghostDriver.get(url);
     	ghostDriver.clickElement("xpath", "//*[@id=\"n-mainpage-description\"]/a", true);
 	    assertEquals("failed to open page in new window..",2,ghostDriver.getNumberOfOpenWindows());
+	    
+	    
+		ghostDriver.closeAllOtherOpenWindows();
+	    assertEquals("failed to close the open windows..",1,ghostDriver.getNumberOfOpenWindows());
+
     }
     
     @Test
