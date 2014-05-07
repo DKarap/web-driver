@@ -1,6 +1,6 @@
 package org.webdriver.domain;
 
-import java.util.Collection;
+import java.util.List;
 
 public class WebPage {
 	
@@ -8,13 +8,13 @@ public class WebPage {
 	private final String url;
 	private final String title;
 	private final String sourceCode;
-	private final Collection<Frame> frames;
-	private final Collection<Link> links;
+	private final List<Frame> frames;
+	private final List<Link> links;
 	
 	
 
 	public WebPage(int id, String url, String title, String sourceCode,
-			Collection<Frame> frames, Collection<Link> links) {
+			List<Frame> frames, List<Link> links) {
 		super();
 		this.id = id;
 		this.url = url;
@@ -45,12 +45,12 @@ public class WebPage {
 	}
 
 
-	public Collection<Frame> getFrames() {
+	public List<Frame> getFrames() {
 		return frames;
 	}
 
 
-	public Collection<Link> getLinks() {
+	public List<Link> getLinks() {
 		return links;
 	}	
 	
