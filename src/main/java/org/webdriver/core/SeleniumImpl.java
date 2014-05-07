@@ -275,6 +275,12 @@ public class SeleniumImpl implements Driver {
 			}
 			
 			for(WebElement webElement:elementsList){
+				//skip invisible elements 
+				if(!webElement.isDisplayed() || !webElement.isEnabled()){
+					continue;
+				}
+				
+				
 				String tagName = webElement.getTagName();
 				String anchorText = webElement.getText();
 				
