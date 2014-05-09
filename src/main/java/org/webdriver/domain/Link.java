@@ -10,9 +10,7 @@ public class Link extends HtmlElement{
 	private VisualInfoOfHtmlElement visualInfoOfHtmlElement;
 	
 	
-	public Link(String tag, Map<String, String> attributesMap,
-			String text, String xpath,
-			VisualInfoOfHtmlElement visualInfoOfHtmlElement) {
+	public Link(String tag, Map<String, String> attributesMap,String text, String xpath,VisualInfoOfHtmlElement visualInfoOfHtmlElement) {
 		super(tag, attributesMap);
 		this.text = text;
 		this.xpath = xpath;
@@ -20,6 +18,13 @@ public class Link extends HtmlElement{
 	}
 
 
+	public String getAttributeValue(String key){
+		return getAttributesMap().get(key);
+	}
+	
+	public void addAttribute(String key, String value){
+		getAttributesMap().put(key, value);
+	}
 
 	public String getText() {
 		return text;
