@@ -17,6 +17,8 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.webdriver.domain.FindElementBy;
+import org.webdriver.domain.FindFrameBy;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 import org.webdriver.domain.VisualInfoOfHtmlElement;
@@ -42,7 +44,7 @@ public class SeleniumImpl implements Driver {
 		String url = getCurrentUrl();
 		String title = getTitle();
 		String sourceCode = getPageSource();
-		return new WebPage(id, url, title, sourceCode, getFrames(FRAME_TAG_NAME_LIST), getLinks("tagName", "body", LINK_TAG_NAME_LIST));
+		return new WebPage(id, url, title, sourceCode, getFrames(FRAME_TAG_NAME_LIST), getLinks(FindElementBy.tagName, "body", LINK_TAG_NAME_LIST));
 	}
 
 	
@@ -114,11 +116,11 @@ public class SeleniumImpl implements Driver {
 	
 
 	@Override
-	public void selectOptions(String method, String value, Collection<String> textToSelect) throws WebDriverException{
+	public void selectOptions(FindElementBy by, String value, Collection<String> textToSelect) throws WebDriverException{
 		WebElement initialElement = null;
 		List<WebElement> selectElementList = null; 
 		try{
-			initialElement = findElement(method, value);
+			initialElement = findElement(by, value);
 			selectElementList	= initialElement.findElements(By.tagName("select"));
 		}catch(NoSuchElementException e){
 			System.out.println("Fail to find the initial element or page desnt include select elements:"+e.getLocalizedMessage());
@@ -160,15 +162,15 @@ public class SeleniumImpl implements Driver {
 	
 	
 	@Override
-	public boolean switchToFrame(String method, Object value) throws WebDriverException{
+	public boolean switchToFrame(FindFrameBy by, Object value) throws WebDriverException{
 		try{
 			
-			if(method.equalsIgnoreCase("index"))
+			if(by.equals(FindFrameBy.index))
 				webDriver.switchTo().frame((Integer)value);
-			else if(method.equalsIgnoreCase("nameOrId"))
+			else if(by.equals(FindFrameBy.nameOrId))
 				webDriver.switchTo().frame((String)value);
 			else{
-				System.out.println("Invalid method("+method+") to find a frame");
+				System.out.println("Invalid method("+by+") to find a frame");
 				return false;
 			}
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
@@ -221,10 +223,10 @@ public class SeleniumImpl implements Driver {
 	
 
 	@Override
-	public boolean clickElement(String method, String value, boolean openInNewWindow) throws WebDriverException{
+	public boolean clickElement(FindElementBy by, String value, boolean openInNewWindow) throws WebDriverException{
 		try{
 			
-			WebElement we = findElement(method, value);
+			WebElement we = findElement(by, value);
 			if(openInNewWindow){
 				js.executeScript("arguments[0].setAttribute('target', '_blank');", we);
 			}
@@ -253,17 +255,16 @@ public class SeleniumImpl implements Driver {
 	
 	
 	@Override
-	public List<Link> getLinks(String method, Object value, Collection<String> LINK_TAG_NAME_LIST) throws WebDriverException{
+	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST) throws WebDriverException{
 		List<Link> linkList = new ArrayList<Link>();
 		
 		WebElement initialElement = null;
 		try{
-			initialElement = findElement(method, value);
+			initialElement = findElement(by, value);
 		}catch(NoSuchElementException e){
 			System.out.println("Fail to find the initial element:"+e.getLocalizedMessage());
 			return linkList;
 		}
-		
 		
 		for(String linkTagName:LINK_TAG_NAME_LIST){
 			List<WebElement> elementsList = null;
@@ -356,20 +357,20 @@ public class SeleniumImpl implements Driver {
 	}
 
 
-	private WebElement findElement(String method, Object value) throws WebDriverException, NoSuchElementException,InvalidSelectorException{
+	private WebElement findElement(FindElementBy by, Object value) throws WebDriverException, NoSuchElementException,InvalidSelectorException{
 		WebElement we = null;
-		if(method.equalsIgnoreCase("xpath"))
+		if(by.equals(FindElementBy.xpath))
 			we = webDriver.findElement(By.xpath((String) value));
-		else if(method.equalsIgnoreCase("tagName"))
+		else if(by.equals(FindElementBy.tagName))
 			we = webDriver.findElement(By.tagName((String) value));
-		else if(method.equalsIgnoreCase("name"))
+		else if(by.equals(FindElementBy.name))
 			we = webDriver.findElement(By.name((String)value));
-		else if(method.equalsIgnoreCase("className"))
+		else if(by.equals(FindElementBy.className))
 			we = webDriver.findElement(By.className((String)value));
-		else if(method.equalsIgnoreCase("linkText"))
+		else if(by.equals(FindElementBy.linkText))
 			we = webDriver.findElement(By.linkText((String)value));
 		else
-			throw new InvalidSelectorException("Invalid method("+method+") to find an element");
+			throw new InvalidSelectorException("Invalid method("+by+") to find an element");
 		
 		return we;
 	}

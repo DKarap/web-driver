@@ -3,7 +3,10 @@ package org.webdriver.core;
 import java.util.Collection;
 import java.util.List;
 
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriverException;
+import org.webdriver.domain.FindElementBy;
+import org.webdriver.domain.FindFrameBy;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 import org.webdriver.domain.WebPage;
@@ -93,23 +96,23 @@ public interface Driver {
 	/**
 	 * Select each option that exist after the detected (web or select or whatever) element to the one with most relevant text to the given one
 	 * TODO HACK: in case we want to select only the ALL option then we can check only the first option from each select since this is the place where exist normaly
-	 * @param method the method that we use to find the element which after it we will set the options to ALL, 
+	 * @param by the method that we use to find the element which after it we will set the options to ALL, 
  	 * @param value the value of the method
   	 * @param textToSelect list of text(synonims) that we look for to select
  	 * @throws WebDriverException If something fucked up happened with the webdriver  
 	 */
-	public void selectOptions(String method, String value, Collection<String> textToSelect);
+	public void selectOptions(FindElementBy by, String value, Collection<String> textToSelect);
 	
 	
 	
 	/**
 	 * Switch to frame 
-	 * @param method the method that we use to find the frame (index,name,etc...)
+	 * @param by the method that we use to find the frame (index,name,etc...)
  	 * @param value the value of the method 
 	 * @return true if we manage to switch to frame, otherwise false
  	 * @throws WebDriverException If something fucked up happened with the webdriver  
 	 */
-	public boolean switchToFrame(String method, Object value);	
+	public boolean switchToFrame(FindFrameBy by, Object value);	
 
 
 	
@@ -128,13 +131,13 @@ public interface Driver {
 	
 	/**
 	 * open a new web page by clicking the element which is find by the given method's value - ATTENTION: the driver is still points to the initial window and not in the new one!
-	 * @param method the method that we use to find the element for click (xpath,name,id,etc...)
+	 * @param by the method that we use to find the element for click (xpath,name,id,etc...)
  	 * @param value the value of the element that we look for to click
  	 * @param openInNewWindow true if we want to open it in a new window..
 	 * @return true if we manage to find and click the element, otherwise false
  	 * @throws WebDriverException If something fucked up happened with the webdriver  
 	 */
-	public boolean clickElement(String method, String value, boolean openInNewWindow);
+	public boolean clickElement(FindElementBy by, String value, boolean openInNewWindow);
 	
 	
 	
@@ -142,12 +145,12 @@ public interface Driver {
 	
 	/**
 	 * Return all the links of the current web page after the element which is found with the given method;if we want all the links then simply choose the body element by tag name 
-	 * @param method the method that we use to find the element for further looking for links
+	 * @param by the method that we use to find the element for further looking for links
  	 * @param value the value of the method 
  	 * @param LINK_TAG_NAME_LIST list of tag names that we want to retrieve
 	 * @return list of links of the current web page after a given element or all of them; if element cannot be find then return an empty list
  	 * @throws WebDriverException If something fucked up happened with the webdriver  
 	 */
-	public List<Link> getLinks(String method, Object value, Collection<String> LINK_TAG_NAME_LIST);
+	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST);
 	
 }

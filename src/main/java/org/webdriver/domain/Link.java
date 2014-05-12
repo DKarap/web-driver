@@ -59,6 +59,8 @@ public class Link extends HtmlElement{
 		this.visualInfoOfHtmlElement = visualInfoOfHtmlElement;
 	}
 
+	
+
 
 	
 	@Override

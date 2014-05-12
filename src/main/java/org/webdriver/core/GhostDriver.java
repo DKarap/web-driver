@@ -14,6 +14,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.webdriver.domain.FindElementBy;
+import org.webdriver.domain.FindFrameBy;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 
@@ -119,13 +121,14 @@ public class GhostDriver extends SeleniumImpl{
 
 //		final String url = "http://bethefuture.nl/vacatures-2/";
 		final String url = "http://weblog.independer.nl/vacature/";
+		
 
 		try{
         	//1. get page
         	System.out.println("\tgeturl");
     		ghostDriver.get(url);
     		
-    		boolean success = ghostDriver.clickElement("xpath", "/HTML[1]/BODY[1]/DIV[1]/DIV[4]/DIV[2]/DIV[1]/DIV[1]/H3[1]/A[1]", true);
+    		boolean success = ghostDriver.clickElement(FindElementBy.xpath, "/HTML[1]/BODY[1]/DIV[1]/DIV[4]/DIV[2]/DIV[1]/DIV[1]/H3[1]/A[1]", true);
     		System.out.println("\tsuccess:"+success+"\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
     		ghostDriver.closeAllOtherOpenWindows();
     		System.out.println("\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
@@ -143,7 +146,7 @@ public class GhostDriver extends SeleniumImpl{
         	System.out.println("\turl:"+ghostDriver.getCurrentUrl());
     		//4. get links
     		System.out.println("\tget links");
-        	List<Link> links = ghostDriver.getLinks("tagName", "body", Arrays.asList("a"));
+        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "body", Arrays.asList("a"));
         	System.out.println("\t#links:"+ links.size());
         	for(Link l:links)
         		System.out.println(l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText());
@@ -155,7 +158,7 @@ public class GhostDriver extends SeleniumImpl{
         	//6. switch to frame
         	System.out.println("\tswitch to frame");
         	if(frames.size()>0){
-        		ghostDriver.switchToFrame("index", frames.get(0).getFrameIndex());
+        		ghostDriver.switchToFrame(FindFrameBy.index, frames.get(0).getFrameIndex());
         	}
     		System.out.println("\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
 
