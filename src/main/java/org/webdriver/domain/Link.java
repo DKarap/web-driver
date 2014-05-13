@@ -17,6 +17,13 @@ public class Link extends HtmlElement{
 		this.visualInfoOfHtmlElement = visualInfoOfHtmlElement;
 	}
 
+	
+	public String getClassification(){
+		return getAttributesMap().get("class");
+	}
+	public void setClassification(String classification){
+		getAttributesMap().put("class", classification);
+	}
 
 	public String getAttributeValue(String key){
 		return getAttributesMap().get(key);

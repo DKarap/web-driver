@@ -129,21 +129,21 @@ public class GhostDriverTest {
 
     }
     
-    @Test
-    public void testSelectOption(){
-    	final String url = "https://philips.taleo.net/careersection/2/moresearch.ftl";
-    	ghostDriver.get(url);
-	    List<Link> linkListBefore = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"requisitionListInterface.listRequisitionContainer\"]",LINK_TAG_NAME_LIST);
-	    System.out.println( linkListBefore.size());
-
-		final ImmutableSet<String> OptionSelectALLRelevantTerms = ImmutableSet.of("armenia");
-	    ghostDriver.selectOptions(FindElementBy.tagName, "body", OptionSelectALLRelevantTerms);
-	    ghostDriver.clickElement(FindElementBy.xpath, "//*[@id=\"advancedSearchFooterInterface.searchAction\"]", false);
-	    List<Link> linkListAfter = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"requisitionListInterface.listRequisitionContainer\"]",LINK_TAG_NAME_LIST);
-	    
-	    System.out.println( linkListBefore.size()+"\t"+linkListAfter.size());
-	    assertTrue("Select Option broke..",linkListBefore.size() > linkListAfter.size());
-    }
+//    @Test
+//    public void testSelectOption(){
+//    	final String url = "https://tenet.taleo.net/careersection/10000/jobsearch.ftl?lang=en";
+//    	ghostDriver.get(url);
+//	    List<Link> linkListBefore = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"requisitionListInterface.listRequisitionContainer\"]",LINK_TAG_NAME_LIST);
+//	    System.out.println( linkListBefore.size());
+//
+//		final ImmutableSet<String> OptionSelectALLRelevantTerms = ImmutableSet.of("virginia");
+//	    ghostDriver.selectOptions(FindElementBy.tagName, "body", OptionSelectALLRelevantTerms);
+//	    ghostDriver.clickElement(FindElementBy.xpath, "//*[@id=\"advancedSearchFooterInterface.searchAction\"]", false);
+//	    List<Link> linkListAfter = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"requisitionListInterface.listRequisitionContainer\"]",LINK_TAG_NAME_LIST);
+//	    
+//	    System.out.println( linkListBefore.size()+"\t"+linkListAfter.size());
+//	    assertTrue("Select Option broke..",linkListBefore.size() > linkListAfter.size());
+//    }
     
     
     @Test
