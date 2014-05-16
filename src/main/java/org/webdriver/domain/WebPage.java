@@ -1,5 +1,6 @@
 package org.webdriver.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WebPage {
@@ -10,6 +11,8 @@ public class WebPage {
 	private final String sourceCode;
 	private List<Frame> frames;
 	private List<Link> links;
+	private List<Link> linksToThisWebPage;
+		
 	
 	
 
@@ -22,8 +25,25 @@ public class WebPage {
 		this.sourceCode = sourceCode;
 		this.frames = frames;
 		this.links = links;
+		this.linksToThisWebPage = new ArrayList<Link>();
 	}
-	
+
+
+
+
+	public List<Link> getLinksToThisWebPage() {
+		return linksToThisWebPage;
+	}
+
+
+	public void setLinksToThisWebPage(List<Link> linksToThisWebPage) {
+		this.linksToThisWebPage = linksToThisWebPage;
+	}
+
+	public void addLinkToThisWebPage(Link linkToThisWebPage) {
+		this.linksToThisWebPage.add(linkToThisWebPage);
+	}
+
 
 	public int getId() {
 		return id;
