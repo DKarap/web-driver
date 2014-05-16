@@ -8,8 +8,8 @@ public class WebPage {
 	private final String url;
 	private final String title;
 	private final String sourceCode;
-	private final List<Frame> frames;
-	private final List<Link> links;
+	private List<Frame> frames;
+	private List<Link> links;
 	
 	
 
@@ -52,6 +52,16 @@ public class WebPage {
 
 	public List<Link> getLinks() {
 		return links;
+	}
+
+
+	public void setFrames(List<Frame> frames) {
+		this.frames = frames;
+	}
+
+
+	public void setLinks(List<Link> links) {
+		this.links = links;
 	}	
 	
 }
