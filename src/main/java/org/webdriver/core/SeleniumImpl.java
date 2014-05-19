@@ -30,12 +30,13 @@ public class SeleniumImpl implements Driver {
 	private WebDriver webDriver;
     private JavascriptExecutor js; //TODO setScriptTimeout
 	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
-	
+	private StringBuilder log_buf;
 	
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
 		super();
 		this.webDriver = webDriver;
-		js = (JavascriptExecutor) webDriver; 
+		js = (JavascriptExecutor) webDriver;
+		this.log_buf = new StringBuilder();
 	}
 
 	
@@ -57,10 +58,10 @@ public class SeleniumImpl implements Driver {
 			webDriver.get(url);
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
 		}catch(TimeoutException timeoutException){
-			System.out.println("Timeout during page loading:"+url+"\tException:"+timeoutException.getMessage());
+			log_buf.append("Timeout during page loading:"+url+"\tException:"+timeoutException.getMessage()+"\n");
 			return false;
 		} catch (InterruptedException e) {
-			System.out.println("InterruptedException during page loading:"+url+"\tException:"+e.getMessage());
+			log_buf.append("InterruptedException during page loading:"+url+"\tException:"+e.getMessage()+"\n");
 			return false;
 		} 
 		return true;
@@ -105,7 +106,7 @@ public class SeleniumImpl implements Driver {
 		try{
 			title = (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
 		}catch(NoSuchElementException e){
-			System.out.println("Fail to find the html initial element in order to get the page title via js:"+e.getLocalizedMessage());
+			log_buf.append("Fail to find the html initial element in order to get the page title via js:"+e.getLocalizedMessage()+"\n");
 			return title;
 		}
 		return title;
@@ -130,7 +131,7 @@ public class SeleniumImpl implements Driver {
 			initialElement = findElement(by, value);
 			selectElementList	= initialElement.findElements(By.tagName("select"));
 		}catch(NoSuchElementException e){
-			System.out.println("Fail to find the initial element or page desnt include select elements:"+e.getLocalizedMessage());
+			log_buf.append("Fail to find the initial element or page desnt include select elements:"+e.getLocalizedMessage()+"\n");
 			return;
 		}
 		
@@ -141,7 +142,7 @@ public class SeleniumImpl implements Driver {
 			try{
 				allCurrentOptions = selectElement.findElements(By.tagName("option"));
 			}catch(NoSuchElementException e){
-				System.out.println("Current select element doesnt include options..continue with next select element:"+e.getMessage());
+				log_buf.append("Current select element doesnt include options..continue with next select element:"+e.getMessage()+"\n");
 				continue;
 			}
 			
@@ -156,7 +157,7 @@ public class SeleniumImpl implements Driver {
 					try{
 						option.click();
 					}catch(StaleElementReferenceException e){
-						System.out.println("Exception with the selected option element:"+e.getMessage());
+						log_buf.append("Exception with the selected option element:"+e.getMessage()+"\n");
 						continue;
 					}
 					break;
@@ -177,20 +178,20 @@ public class SeleniumImpl implements Driver {
 			else if(by.equals(FindFrameBy.nameOrId))
 				webDriver.switchTo().frame((String)value);
 			else{
-				System.out.println("Invalid method("+by+") to find a frame");
+				log_buf.append("Invalid method("+by+") to find a frame\n");
 				return false;
 			}
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
 			
 			
 		}catch(NoSuchFrameException e){
-			System.out.println("Exception durring switchToFrame:"+e.getMessage());
+			log_buf.append("Exception durring switchToFrame:"+e.getMessage()+"\n");
 			return false;
 		}catch(ClassCastException e){
-			System.out.println("Exception durring switchToFrame:"+e.getMessage());
+			log_buf.append("Exception durring switchToFrame:"+e.getMessage()+"\n");
 			return false;
 		} catch (InterruptedException e) {
-			System.out.println("InterruptedException during switchToFrame:"+e.getMessage());
+			log_buf.append("InterruptedException during switchToFrame:"+e.getMessage()+"\n");
 			return false;
 		}
 		return true;
@@ -210,7 +211,7 @@ public class SeleniumImpl implements Driver {
 			try{
 				elementsList = webDriver.findElements(By.tagName(frameTagName));
 			}catch(NoSuchElementException e){
-				System.out.println("Current page doesnt include "+frameTagName+" tags - continue with the next frame tag:"+e.getMessage());
+				log_buf.append("Current page doesnt include "+frameTagName+" tags - continue with the next frame tag:"+e.getMessage()+"\n");
 				continue;
 			}
 			
@@ -242,19 +243,19 @@ public class SeleniumImpl implements Driver {
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
 			
 		}catch(NoSuchElementException e){
-			System.out.println("NoSuchElementException durring clickLink:"+e.getMessage());
+			log_buf.append("NoSuchElementException durring clickLink:"+e.getMessage()+"\n");
 			return false;
 		}catch(StaleElementReferenceException e){
-			System.out.println("StaleElementReferenceException durring clickLink:"+e.getMessage());
+			log_buf.append("StaleElementReferenceException durring clickLink:"+e.getMessage()+"\n");
 			return false;
 		} catch (InterruptedException e) {
-			System.out.println("InterruptedException during clickLink:"+e.getMessage());
+			log_buf.append("InterruptedException during clickLink:"+e.getMessage()+"\n");
 			return false;
 		} catch (ElementNotVisibleException e) {
-			System.out.println("ElementNotVisibleException during clickLink:"+e.getMessage());
+			log_buf.append("ElementNotVisibleException during clickLink:"+e.getMessage()+"\n");
 			return false;
 		}catch(TimeoutException timeoutException){
-			System.out.println("Timeout during clickLink\tException:"+timeoutException.getMessage());
+			log_buf.append("Timeout during clickLink\tException:"+timeoutException.getMessage()+"\n");
 			return false;
 		}
 
@@ -272,7 +273,7 @@ public class SeleniumImpl implements Driver {
 		try{
 			initialElement = findElement(by, value);
 		}catch(NoSuchElementException e){
-			System.out.println("Fail to find the initial element:"+e.getLocalizedMessage());
+			log_buf.append("Fail to find the initial element:"+e.getLocalizedMessage()+"\n");
 			return linkList;
 		}
 		
@@ -281,7 +282,7 @@ public class SeleniumImpl implements Driver {
 			try{
 				elementsList = initialElement.findElements(By.tagName(linkTagName));
 			}catch(NoSuchElementException e){
-				System.out.println("Current page doesnt include "+linkTagName+" tag - continue with next tag:"+e.getMessage());
+				log_buf.append("Current page doesnt include "+linkTagName+" tag - continue with next tag:"+e.getMessage()+"\n");
 				continue;
 			}
 			
@@ -308,7 +309,7 @@ public class SeleniumImpl implements Driver {
 					//construct and add link to final output list
 					linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, visualInfoOfHtmlElement));
 				}catch(StaleElementReferenceException e){
-					System.out.println("Current element changed..."+e.getMessage());
+					log_buf.append("Current element changed..."+e.getMessage()+"\n");
 					continue;
 				}
 			}
@@ -365,7 +366,7 @@ public class SeleniumImpl implements Driver {
 					elementAttrMap.put(attrArr[0], attrArr[1]);
 			}
         }catch(Exception e){
-        	e.printStackTrace();
+        	log_buf.append("Exception durring getElementAttributes:"+e.getMessage()+"\n");
         	return elementAttrMap;
         }
     	return elementAttrMap;	        
@@ -388,6 +389,12 @@ public class SeleniumImpl implements Driver {
 			throw new InvalidSelectorException("Invalid method("+by+") to find an element");
 		
 		return we;
+	}
+
+
+	@Override
+	public String getLog() {
+		return this.log_buf.toString();
 	}
 
 }

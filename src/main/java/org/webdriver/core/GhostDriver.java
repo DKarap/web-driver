@@ -120,7 +120,7 @@ public class GhostDriver extends SeleniumImpl{
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
 //		final String url = "http://bethefuture.nl/vacatures-2/";
-		final String url = "http://weblog.independer.nl/vacature/";
+		final String url = "http://didata.taleo.net/careersection/10200/joblist.ftl";
 		
 
 		try{

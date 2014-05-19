@@ -24,6 +24,13 @@ public interface Driver {
 
 	/**
 	 * get the WebPage that the driver currently points to
+	 * @return log msg in case something went bad with the driver 
+	 */
+	public String getLog();
+	
+	
+	/**
+	 * get the WebPage that the driver currently points to
 	 * @param id the id of the page; can be the a random one or the number of result list page that the driver points to
 	 * @param  FRAME_TAG_NAME_LIST list of tag names that we consider frames
  	 * @param LINK_TAG_NAME_LIST list of tag names that we want to retrieve
