@@ -101,7 +101,14 @@ public class SeleniumImpl implements Driver {
 	@Override
 	public String getTitle() throws WebDriverException{
 //		return webDriver.getTitle();
-		return (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
+		String title = null;
+		try{
+			title = (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
+		}catch(NoSuchElementException e){
+			System.out.println("Fail to find the html initial element in order to get the page title via js:"+e.getLocalizedMessage());
+			return title;
+		}
+		return title;
 	}
 
 	@Override
@@ -246,6 +253,9 @@ public class SeleniumImpl implements Driver {
 		} catch (ElementNotVisibleException e) {
 			System.out.println("ElementNotVisibleException during clickLink:"+e.getMessage());
 			return false;
+		}catch(TimeoutException timeoutException){
+			System.out.println("Timeout during clickLink\tException:"+timeoutException.getMessage());
+			return false;
 		}
 
 		return true;
@@ -276,26 +286,31 @@ public class SeleniumImpl implements Driver {
 			}
 			
 			for(WebElement webElement:elementsList){
-				//skip invisible elements 
-				if(!webElement.isDisplayed() || !webElement.isEnabled()){
+				try{
+					//skip invisible elements 
+					if(!webElement.isDisplayed() || !webElement.isEnabled()){
+						continue;
+					}
+					
+					
+					String tagName = webElement.getTagName();
+					String anchorText = webElement.getText();
+					
+					//visual info of current element
+					VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
+					
+					//get attributes Map
+					Map<String,String> elementAttrMap = getElementAttributes(webElement);
+					
+					//get the fucking XPATHS!!
+					String xpath = getAbsoluteXpathFromWebElement(webElement);
+					
+					//construct and add link to final output list
+					linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, visualInfoOfHtmlElement));
+				}catch(StaleElementReferenceException e){
+					System.out.println("Current element changed..."+e.getMessage());
 					continue;
 				}
-				
-				
-				String tagName = webElement.getTagName();
-				String anchorText = webElement.getText();
-				
-				//visual info of current element
-				VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
-				
-				//get attributes Map
-				Map<String,String> elementAttrMap = getElementAttributes(webElement);
-				
-				//get the fucking XPATHS!!
-				String xpath = getAbsoluteXpathFromWebElement(webElement);
-				
-				//construct and add link to final output list
-				linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, visualInfoOfHtmlElement));
 			}
 		}
 		return linkList;
