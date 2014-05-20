@@ -158,7 +158,7 @@ public class GhostDriver extends SeleniumImpl{
         	//6. switch to frame
         	System.out.println("\tswitch to frame");
         	if(frames.size()>0){
-        		ghostDriver.switchToFrame(FindFrameBy.index, frames.get(0).getFrameIndex());
+        		ghostDriver.switchToFrame(FindFrameBy.index, frames.get(0).getIndex());
         	}
     		System.out.println("\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
 

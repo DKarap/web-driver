@@ -4,24 +4,24 @@ import java.util.Map;
 
 public class Frame extends HtmlElement{
 
-	private int frameIndex;
+	private int index;
 
-	public Frame(String tag, Map<String, String> attributesMap, int frameIndex) {
+	public Frame(String tag, Map<String, String> attributesMap, int index) {
 		super(tag, attributesMap);
-		this.frameIndex = frameIndex;
+		this.index = index;
 	}
 
-	public int getFrameIndex() {
-		return frameIndex;
+	public int getIndex() {
+		return index;
 	}
 
-	public void setFrameIndex(int frameIndex) {
-		this.frameIndex = frameIndex;
+	public void setIndex(int frameIndex) {
+		this.index = frameIndex;
 	}
 
 	@Override
 	public String toString() {
-		return "Frame [frameIndex=" + frameIndex + ", getTag()=" + getTag()
+		return "Frame [frameIndex=" + index + ", getTag()=" + getTag()
 				+ ", getAttributesMap()=" + getAttributesMap()
 				+ ", toString()=" + super.toString() + ", getClass()="
 				+ getClass() + ", hashCode()=" + hashCode() + "]";

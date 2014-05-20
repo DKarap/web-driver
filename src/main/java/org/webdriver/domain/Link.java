@@ -105,8 +105,7 @@ public class Link extends HtmlElement{
 		return true;
 	}
 
-	
-	
+
 	
 }
 
