@@ -51,8 +51,10 @@ public class SeleniumImpl implements Driver {
 	
 	@Override
 	public boolean get(String url) throws WebDriverException{
-		if(url == null || url.isEmpty())
+		if(url == null || url.isEmpty()){
+			log_buf.append("url null or empty...\n");
 			return false;
+		}
 		
 		try{
 			webDriver.get(url);
