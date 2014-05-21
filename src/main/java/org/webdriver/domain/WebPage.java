@@ -12,7 +12,7 @@ public class WebPage {
 	private List<Frame> frames;
 	private List<Link> links;
 	private List<Link> linksToThisWebPage;
-		
+	private String classification;
 	
 	
 
@@ -29,6 +29,13 @@ public class WebPage {
 	}
 
 
+	public String getClassification() {
+		return classification;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
+	}
 
 
 	public List<Link> getLinksToThisWebPage() {
