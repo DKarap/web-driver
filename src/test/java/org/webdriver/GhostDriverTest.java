@@ -99,7 +99,7 @@ public class GhostDriverTest {
 	    System.out.println(ghostDriver.getCurrentUrl());
 	    
 	    assertEquals("failed to switch to frame..page or functionality broke..","https://bakerhughes.taleo.net/careersection/bhiexternal/moresearch.ftl?lang=en", ghostDriver.getCurrentUrl());
-	    assertEquals("failed to switch to frame..page or functionality broke..","Job Search Job Openings", ghostDriver.getTitle());
+	    assertEquals("failed to switch to frame..page or functionality broke..","Job Search", ghostDriver.getTitle());
 	    assertTrue("failed to switch to frame by index..",clickSuccess);
 
 
