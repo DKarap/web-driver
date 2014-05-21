@@ -30,7 +30,7 @@ public class SeleniumImpl implements Driver {
 	private WebDriver webDriver;
     private JavascriptExecutor js; //TODO setScriptTimeout
 	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
-	private StringBuilder log_buf;
+	private StringBuilder log_buf;//whatever catches exception happened save it to this buffer
 	
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
 		super();

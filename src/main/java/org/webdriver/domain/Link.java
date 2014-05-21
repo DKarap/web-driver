@@ -8,7 +8,7 @@ public class Link extends HtmlElement{
 	private String text;
 	private String xpath;
 	private VisualInfoOfHtmlElement visualInfoOfHtmlElement;
-	
+	private double score;
 	
 	public Link(String tag, Map<String, String> attributesMap,String text, String xpath,VisualInfoOfHtmlElement visualInfoOfHtmlElement) {
 		super(tag, attributesMap);
@@ -18,6 +18,16 @@ public class Link extends HtmlElement{
 	}
 
 	
+	public double getScore() {
+		return score;
+	}
+
+
+	public void setScore(double score) {
+		this.score = score;
+	}
+
+
 	public String getClassification(){
 		return getAttributesMap().get("class");
 	}
