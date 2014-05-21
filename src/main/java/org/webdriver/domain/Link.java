@@ -8,7 +8,7 @@ public class Link extends HtmlElement{
 	private String text;
 	private String xpath;
 	private VisualInfoOfHtmlElement visualInfoOfHtmlElement;
-	private double score;
+	private double score;//how important is that link(in order to follow?)
 	
 	public Link(String tag, Map<String, String> attributesMap,String text, String xpath,VisualInfoOfHtmlElement visualInfoOfHtmlElement) {
 		super(tag, attributesMap);
