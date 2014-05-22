@@ -139,13 +139,16 @@ public class SeleniumImpl implements Driver {
 	}
 
 	@Override
-	public String getTitle() throws WebDriverException{
+	public String getTitle() {
 //		return webDriver.getTitle();
 		String title = null;
 		try{
 			title = (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
 		}catch(NoSuchElementException e){
 			log_buf.append("Fail to find the html initial element in order to get the page title via js:"+e.getLocalizedMessage()+"\n");
+			return title;
+		}catch(WebDriverException exception){
+			log_buf.append("Fail to find the title of the page:"+exception.getLocalizedMessage()+"\n");
 			return title;
 		}
 		return title;

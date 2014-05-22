@@ -78,7 +78,6 @@ public interface Driver {
 	 * The title of the current page.
 	 * @return The title of the current page, with leading and trailing whitespace stripped, or null
 	 *         if one is not already set
-	 * @throws WebDriverException If something fucked up happened with the webdriver
 	 */
 	public String getTitle();
 
