@@ -40,6 +40,43 @@ public class SeleniumImpl implements Driver {
 	}
 
 	
+
+	@Override
+	public String getLog() {
+		return this.log_buf.toString();
+	}
+
+
+	@Override
+	public String getDescription() {
+		String description = null;
+		try{
+			description = (String) js.executeScript(
+					"function GetMetaValue(element){"+
+					  "var description;"+
+					  "var metas = element.getElementsByTagName('meta');"+
+					  "for (var x=0,y=metas.length; x<y; x++) {"+
+						  "if (metas[x].name.toLowerCase() == \"description\") {"+
+						  	"description = metas[x];"+
+					      "}"+
+					  "}"+
+					   "return  description.content;"+
+					"}"+
+					"return GetMetaValue(arguments[0]);", webDriver.findElement(By.tagName("html")));
+		}catch(NoSuchElementException e){
+			log_buf.append("Fail to find the html initial element in order to get the page description via js:"+e.getLocalizedMessage()+"\n");
+			return description;
+		}catch(WebDriverException exception){
+			log_buf.append("Fail to find the description of the page:"+exception.getLocalizedMessage()+"\n");
+			return description;
+		}
+		return description;
+	}
+
+	
+	
+	
+	
 	@Override
 	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST) throws WebDriverException {
 		String url = getCurrentUrl();
@@ -393,10 +430,5 @@ public class SeleniumImpl implements Driver {
 		return we;
 	}
 
-
-	@Override
-	public String getLog() {
-		return this.log_buf.toString();
-	}
 
 }

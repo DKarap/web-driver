@@ -84,6 +84,14 @@ public interface Driver {
 
 	
 	/**
+	 * The description of the current page.
+	 * @return The description of the current page, with leading and trailing whitespace stripped, or null
+	 *         if one is not already set
+	 */
+	public String getDescription();
+
+	
+	/**
 	 * Get a string representing the current URL that the driver is looking at.
 	 * @return The URL of the page currently loaded in the driver
 	 * @throws WebDriverException If something fucked up happened with the webdriver

@@ -120,7 +120,7 @@ public class GhostDriver extends SeleniumImpl{
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
 //		final String url = "http://bethefuture.nl/vacatures-2/";
-		final String url = "http://didata.taleo.net/careersection/10200/joblist.ftl";
+		final String url = "http://www.textkernel.com";
 		
 
 		try{
@@ -149,7 +149,7 @@ public class GhostDriver extends SeleniumImpl{
         	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "body", Arrays.asList("a"));
         	System.out.println("\t#links:"+ links.size());
         	for(Link l:links)
-        		System.out.println(l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText());
+        		System.out.println(l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
 
     		//5. get frames
         	System.out.println("\tget frames");
