@@ -8,6 +8,7 @@ public class WebPage {
 	private final int id;
 	private final String url;
 	private final String title;
+	private final String description;
 	private final String sourceCode;
 	private List<Frame> frames;
 	private List<Link> links;
@@ -16,12 +17,13 @@ public class WebPage {
 	
 	
 
-	public WebPage(int id, String url, String title, String sourceCode,
+	public WebPage(int id, String url, String title, String description, String sourceCode,
 			List<Frame> frames, List<Link> links) {
 		super();
 		this.id = id;
 		this.url = url;
 		this.title = title;
+		this.description = description;
 		this.sourceCode = sourceCode;
 		this.frames = frames;
 		this.links = links;
@@ -89,6 +91,11 @@ public class WebPage {
 
 	public void setLinks(List<Link> links) {
 		this.links = links;
+	}
+
+
+	public String getDescription() {
+		return description;
 	}	
 	
 }

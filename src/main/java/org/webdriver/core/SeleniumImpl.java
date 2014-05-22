@@ -81,8 +81,9 @@ public class SeleniumImpl implements Driver {
 	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST) throws WebDriverException {
 		String url = getCurrentUrl();
 		String title = getTitle();
+		String description = getDescription();
 		String sourceCode = getPageSource();
-		return new WebPage(id, url, title, sourceCode, getFrames(FRAME_TAG_NAME_LIST), getLinks(FindElementBy.tagName, "body", LINK_TAG_NAME_LIST));
+		return new WebPage(id, url, title, description, sourceCode, getFrames(FRAME_TAG_NAME_LIST), getLinks(FindElementBy.tagName, "body", LINK_TAG_NAME_LIST));
 	}
 
 	
