@@ -1,5 +1,6 @@
 package org.webdriver.domain;
 
+import java.util.Comparator;
 import java.util.Map;
 
 
@@ -77,8 +78,22 @@ public class Link extends HtmlElement{
 	}
 
 	
+	
+	public static Comparator<Link> LinkScoreComparator   = new Comparator<Link>() {
+		@Override
+		public int compare(Link link1, Link link2) {
+			if( link1.score > link2.score)
+				return -1;
+			else if( link1.score < link2.score)
+				return 1;
+			else
+				return 0;
+		}
+	};
 
 
+
+	
 	
 	@Override
 	public String toString() {
