@@ -348,9 +348,11 @@ public class SeleniumImpl implements Driver {
 					
 					//get the fucking XPATHS!!
 					String xpath = getAbsoluteXpathFromWebElement(webElement);
+					String xpath_by_id = getWebElementXpathById(webElement);
+					xpath_by_id = xpath_by_id != xpath ? xpath_by_id : null;
 					
 					//construct and add link to final output list
-					linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, visualInfoOfHtmlElement));
+					linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, xpath_by_id, visualInfoOfHtmlElement));
 				}catch(StaleElementReferenceException e){
 					log_buf.append("Current element changed..."+e.getMessage()+"\n");
 					continue;
@@ -389,7 +391,40 @@ public class SeleniumImpl implements Driver {
 						"return getXPathExpression(arguments[0]);",
 						element);
 	}
-	
+	//http://stackoverflow.com/questions/3454526/how-to-calculate-the-xpath-position-of-an-element-using-javascript
+	private String getWebElementXpathById(WebElement element) throws WebDriverException{
+		return (String) js.executeScript(
+				
+						"function getElementXpath(element){"+
+							"if (element && element.id)"+
+								"return '//*[@id=\"' + element.id + '\"]';"+
+							"else {"+
+								"var paths = [];"+
+								"for (; element && element.nodeType == 1; element = element.parentNode){"+
+									"var index = 0;"+
+														            
+						            "if (element && element.id) {"+
+						                "paths.splice(0, 0, '/*[@id=\"' + element.id + '\"]');"+
+						                "break;"+
+						            "}"+
+							
+									"for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling){"+
+										"if (sibling.nodeType == Node.DOCUMENT_TYPE_NODE)"+
+											"continue;"+
+										"if (sibling.nodeName == element.nodeName)"+
+											"++index;"+
+									"}"+
+									"var tagName = element.nodeName.toLowerCase();"+
+									"var pathIndex = (index ? \"[\" + (index+1) + \"]\" : \"[1]\");"+
+									"paths.splice(0, 0, tagName + pathIndex);"+
+								"}"+
+								"return paths.length ? \"/\" + paths.join(\"/\") : null;"+
+							"}"+
+						"}"+
+						"return getElementXpath(arguments[0]);",
+						element);
+	}
+
 	
 	/**
 	 * 

@@ -8,13 +8,15 @@ public class Link extends HtmlElement{
 	
 	private String text;
 	private String xpath;
+	private String xpath_by_id;
 	private VisualInfoOfHtmlElement visualInfoOfHtmlElement;
 	private double score;//how important is that link(in order to follow?)
 	
-	public Link(String tag, Map<String, String> attributesMap,String text, String xpath,VisualInfoOfHtmlElement visualInfoOfHtmlElement) {
+	public Link(String tag, Map<String, String> attributesMap,String text, String xpath, String xpath_by_id, VisualInfoOfHtmlElement visualInfoOfHtmlElement) {
 		super(tag, attributesMap);
 		this.text = text;
 		this.xpath = xpath;
+		this.xpath_by_id = xpath_by_id;
 		this.visualInfoOfHtmlElement = visualInfoOfHtmlElement;
 	}
 
@@ -128,6 +130,16 @@ public class Link extends HtmlElement{
 		} else if (!text.equals(other.text))
 			return false;
 		return true;
+	}
+
+
+	public String getXpath_by_id() {
+		return xpath_by_id;
+	}
+
+
+	public void setXpath_by_id(String xpath_by_id) {
+		this.xpath_by_id = xpath_by_id;
 	}
 
 
