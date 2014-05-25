@@ -1,6 +1,7 @@
 package org.webdriver.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,8 @@ import org.webdriver.domain.Link;
 import org.webdriver.domain.VisualInfoOfHtmlElement;
 import org.webdriver.domain.WebPage;
 
+import com.google.common.collect.ImmutableList;
+
 public class SeleniumImpl implements Driver {
 
 	
@@ -31,6 +34,9 @@ public class SeleniumImpl implements Driver {
     private JavascriptExecutor js; //TODO setScriptTimeout
 	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
 	private StringBuilder log_buf;//whatever catches exception happened save it to this buffer
+	
+	ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title")).build();
+
 	
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
 		super();
@@ -331,8 +337,9 @@ public class SeleniumImpl implements Driver {
 			
 			for(WebElement webElement:elementsList){
 				try{
-					//skip invisible elements 
+					//TODO issue #21 - skip invisible elements 
 					if(!webElement.isDisplayed() || !webElement.isEnabled()){
+//						System.out.println("is displayed:"+webElement.isDisplayed()+"\t"+webElement.getAttribute("id"));
 						continue;
 					}
 					
@@ -350,6 +357,17 @@ public class SeleniumImpl implements Driver {
 					String xpath = getAbsoluteXpathFromWebElement(webElement);
 					String xpath_by_id = getWebElementXpathById(webElement);
 					xpath_by_id = xpath_by_id != xpath ? xpath_by_id : null;
+					
+					
+					// issue #12
+					WebElement img_child_element = webElement.findElement(By.tagName("img"));
+					for(String img_attr_with_text:IMG_ATTR_WITH_TEXT_LIST){
+						String attr_value = img_child_element.getAttribute(img_attr_with_text);
+						if( attr_value!= null && !attr_value.isEmpty() && !elementAttrMap.containsKey(img_attr_with_text))
+							elementAttrMap.put(img_attr_with_text, img_child_element.getAttribute(img_attr_with_text));
+					}
+				
+					
 					
 					//construct and add link to final output list
 					linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, xpath_by_id, visualInfoOfHtmlElement));
