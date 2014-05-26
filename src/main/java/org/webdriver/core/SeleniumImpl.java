@@ -371,7 +371,7 @@ public class SeleniumImpl implements Driver {
 		return linkList;
 	}
 	
-	//check the child elements which one is an img, and then retrieve the predefined attributes
+	//check the child elements which one is an img, and then retrieve and save the predefined attributes
 	private void getImgChildElelentTextAtributesValue(WebElement webElement, Map<String,String> elementAttrMap, Collection<String> IMG_ATTR_WITH_TEXT_LIST)throws WebDriverException{
 		try{
 			List<WebElement> child_elements = webElement.findElements(By.xpath(".//*"));
