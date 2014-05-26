@@ -1,7 +1,6 @@
 package org.webdriver.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +24,6 @@ import org.webdriver.domain.Link;
 import org.webdriver.domain.VisualInfoOfHtmlElement;
 import org.webdriver.domain.WebPage;
 
-import com.google.common.collect.ImmutableList;
-
 public class SeleniumImpl implements Driver {
 
 	
@@ -35,8 +32,6 @@ public class SeleniumImpl implements Driver {
 	private StringBuilder log_buf;//whatever catches exception happened save it to this buffer
 	
 	//TODO these hardcoded settings must move out
-	//attribute names that include valuable text in image elements
-	ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title","name", "id")).build();
 	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
 
 	
@@ -86,12 +81,12 @@ public class SeleniumImpl implements Driver {
 	
 	
 	@Override
-	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST) throws WebDriverException {
+	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST) throws WebDriverException {
 		String url = getCurrentUrl();
 		String title = getTitle();
 		String description = getDescription();
 		String sourceCode = getPageSource();
-		return new WebPage(id, url, title, description, sourceCode, getFrames(FRAME_TAG_NAME_LIST), getLinks(FindElementBy.tagName, "body", LINK_TAG_NAME_LIST));
+		return new WebPage(id, url, title, description, sourceCode, getFrames(FRAME_TAG_NAME_LIST), getLinks(FindElementBy.tagName, "body", LINK_TAG_NAME_LIST, IMG_ATTR_WITH_TEXT_LIST));
 	}
 
 	
@@ -317,7 +312,7 @@ public class SeleniumImpl implements Driver {
 	
 	
 	@Override
-	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST) throws WebDriverException{
+	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST) throws WebDriverException{
 		List<Link> linkList = new ArrayList<Link>();
 		
 		WebElement initialElement = null;
@@ -362,7 +357,7 @@ public class SeleniumImpl implements Driver {
 					
 					
 					// issue #12
-					getImgChildElelentTextAtributesValue(webElement, elementAttrMap);
+					getImgChildElelentTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
 					
 					
 					//construct and add link to final output list
@@ -377,7 +372,7 @@ public class SeleniumImpl implements Driver {
 	}
 	
 	//check the child elements which one is an img, and then retrieve the predefined attributes
-	private void getImgChildElelentTextAtributesValue(WebElement webElement, Map<String,String> elementAttrMap)throws WebDriverException{
+	private void getImgChildElelentTextAtributesValue(WebElement webElement, Map<String,String> elementAttrMap, Collection<String> IMG_ATTR_WITH_TEXT_LIST)throws WebDriverException{
 		try{
 			List<WebElement> child_elements = webElement.findElements(By.xpath(".//*"));
 			for(WebElement img_child_element : child_elements){

@@ -34,10 +34,11 @@ public interface Driver {
 	 * @param id the id of the page; can be the a random one or the number of result list page that the driver points to
 	 * @param  FRAME_TAG_NAME_LIST list of tag names that we consider frames
  	 * @param LINK_TAG_NAME_LIST list of tag names that we want to retrieve
+  	 * @param IMG_ATTR_WITH_TEXT_LIST list of images' attribute names that normally include text
 	 * @return WebPage an object with all the info the driver can extarct from a webpage 
  	 * @throws WebDriverException If something fucked up happened with the webdriver
 	 */
-	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST);
+	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST);
 
 	
 	
@@ -162,9 +163,10 @@ public interface Driver {
 	 * @param by the method that we use to find the element for further looking for links
  	 * @param value the value of the method 
  	 * @param LINK_TAG_NAME_LIST list of tag names that we want to retrieve
+ 	 * @param IMG_ATTR_WITH_TEXT_LIST list of images' attribute names that normally include text
 	 * @return list of links of the current web page after a given element or all of them; if element cannot be find then return an empty list
  	 * @throws WebDriverException If something fucked up happened with the webdriver  
 	 */
-	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST);
+	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST);
 	
 }

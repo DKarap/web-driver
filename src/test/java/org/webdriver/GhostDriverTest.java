@@ -19,13 +19,15 @@ import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 import org.webdriver.domain.WebPage;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 
 public class GhostDriverTest {
 
     private Driver ghostDriver = null;
-
+	ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title","name", "id")).build();
+	
 	public static final ImmutableSet<String> FRAME_TAG_NAME_LIST = ImmutableSet.of(
 	  "frame",
 	  "iframe");
@@ -68,7 +70,7 @@ public class GhostDriverTest {
     @Test
     public void testGetChildImgAttr(){
 		ghostDriver.get("./data/test.html");
-		List<Link> links = ghostDriver.getLinks(FindElementBy.className, "tags", new ArrayList<String>(Arrays.asList("a")));
+		List<Link> links = ghostDriver.getLinks(FindElementBy.className, "tags", new ArrayList<String>(Arrays.asList("a")),IMG_ATTR_WITH_TEXT_LIST);
 		for(Link l:links)
 			System.out.println("tag:"+l.getTag()+"\ttext:"+l.getText()+"\tall attr:"+l.getAttributesMap().toString());				
 
@@ -132,10 +134,10 @@ public class GhostDriverTest {
     	final String url = "http://en.wikipedia.org/wiki/Main_Page";
     	ghostDriver.get(url);
 	    
-	    List<Link> linkList = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"p-navigation\"]/div",LINK_TAG_NAME_LIST);
+	    List<Link> linkList = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"p-navigation\"]/div",LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
 	    assertEquals("Get links failed or wikipedia changed..", 7, linkList.size());
 	    assertEquals("Computation xapth is broken or wiki changed..","/html[1]/body[1]/div[4]/div[2]/div[2]/div[1]/ul[1]/li[1]/a[1]",linkList.get(0).getXpath());
-	    linkList = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"malaka\"]/div",LINK_TAG_NAME_LIST);
+	    linkList = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"malaka\"]/div",LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
 	    assertEquals("Get links failed or wikipedia changed..", 0, linkList.size());
 
     }
@@ -162,7 +164,7 @@ public class GhostDriverTest {
     	final String url = "http://en.wikipedia.org/wiki/Main_Page";
     	ghostDriver.get(url);
 	    
-    	WebPage webPage = ghostDriver.getCurrentWebPage(1, Arrays.asList("frame"), Arrays.asList("a"));
+    	WebPage webPage = ghostDriver.getCurrentWebPage(1, Arrays.asList("frame"), Arrays.asList("a"),IMG_ATTR_WITH_TEXT_LIST);
     	
     	assertEquals("getWebPage title broke..", "Wikipedia, the free encyclopedia", webPage.getTitle());
     	assertEquals("getWebPage url broke..", "http://en.wikipedia.org/wiki/Main_Page", webPage.getUrl());    	

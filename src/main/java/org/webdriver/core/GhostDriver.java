@@ -19,6 +19,8 @@ import org.webdriver.domain.FindFrameBy;
 import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 
+import com.google.common.collect.ImmutableList;
+
 
 public class GhostDriver extends SeleniumImpl{
 
@@ -116,6 +118,9 @@ public class GhostDriver extends SeleniumImpl{
 	
 	
 	public static void main(String args[]) throws Exception{
+		//attribute names that include valuable text in image elements
+		ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title","name", "id")).build();
+
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
 
@@ -146,7 +151,7 @@ public class GhostDriver extends SeleniumImpl{
         	System.out.println("\turl:"+ghostDriver.getCurrentUrl());
     		//4. get links
     		System.out.println("\tget links");
-        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "body", Arrays.asList("a"));
+        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "body", Arrays.asList("a"),IMG_ATTR_WITH_TEXT_LIST);
         	System.out.println("\t#links:"+ links.size());
         	for(Link l:links)
         		System.out.println(l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
