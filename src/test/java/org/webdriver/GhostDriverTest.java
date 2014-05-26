@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,6 +65,16 @@ public class GhostDriverTest {
     }
     
     
+    @Test
+    public void testGetChildImgAttr(){
+		ghostDriver.get("./data/test.html");
+		List<Link> links = ghostDriver.getLinks(FindElementBy.className, "tags", new ArrayList<String>(Arrays.asList("a")));
+		for(Link l:links)
+			System.out.println("tag:"+l.getTag()+"\ttext:"+l.getText()+"\tall attr:"+l.getAttributesMap().toString());				
+
+	    assertEquals("failed to find the img child element..",1,links.size());
+
+    }
     
     @Test
     public void testClickLink(){

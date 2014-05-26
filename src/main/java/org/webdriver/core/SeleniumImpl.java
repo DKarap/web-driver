@@ -32,10 +32,12 @@ public class SeleniumImpl implements Driver {
 	
 	private WebDriver webDriver;
     private JavascriptExecutor js; //TODO setScriptTimeout
-	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
 	private StringBuilder log_buf;//whatever catches exception happened save it to this buffer
 	
-	ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title")).build();
+	//TODO these hardcoded settings must move out
+	//attribute names that include valuable text in image elements
+	ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title","name", "id")).build();
+	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
 
 	
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
@@ -339,7 +341,7 @@ public class SeleniumImpl implements Driver {
 				try{
 					//TODO issue #21 - skip invisible elements 
 					if(!webElement.isDisplayed() || !webElement.isEnabled()){
-//						System.out.println("is displayed:"+webElement.isDisplayed()+"\t"+webElement.getAttribute("id"));
+						//System.out.println("is not displayed:"+webElement.getText()+"\t"+webElement.getAttribute("id"));
 						continue;
 					}
 					
@@ -360,13 +362,7 @@ public class SeleniumImpl implements Driver {
 					
 					
 					// issue #12
-					WebElement img_child_element = webElement.findElement(By.tagName("img"));
-					for(String img_attr_with_text:IMG_ATTR_WITH_TEXT_LIST){
-						String attr_value = img_child_element.getAttribute(img_attr_with_text);
-						if( attr_value!= null && !attr_value.isEmpty() && !elementAttrMap.containsKey(img_attr_with_text))
-							elementAttrMap.put(img_attr_with_text, img_child_element.getAttribute(img_attr_with_text));
-					}
-				
+					getImgChildElelentTextAtributesValue(webElement, elementAttrMap);
 					
 					
 					//construct and add link to final output list
@@ -380,7 +376,24 @@ public class SeleniumImpl implements Driver {
 		return linkList;
 	}
 	
+	//check the child elements which one is an img, and then retrieve the predefined attributes
+	private void getImgChildElelentTextAtributesValue(WebElement webElement, Map<String,String> elementAttrMap)throws WebDriverException{
+		try{
+			List<WebElement> child_elements = webElement.findElements(By.xpath(".//*"));
+			for(WebElement img_child_element : child_elements){
+				if(img_child_element.getTagName().equalsIgnoreCase("img")){
+					for(String img_attr_with_text:IMG_ATTR_WITH_TEXT_LIST){
+						String attr_value = img_child_element.getAttribute(img_attr_with_text);
+						if( attr_value!= null && !attr_value.isEmpty() && !elementAttrMap.containsKey(img_attr_with_text))
+							elementAttrMap.put(img_attr_with_text, img_child_element.getAttribute(img_attr_with_text));
+					}
+				}
+			}
+		}catch(NoSuchElementException e){
+			return;
+		}
 
+	}
 
 	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement) throws WebDriverException{
 		return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),webElement.getCssValue("font-size"),webElement.getCssValue("font-weight"),webElement.getCssValue("color"));
