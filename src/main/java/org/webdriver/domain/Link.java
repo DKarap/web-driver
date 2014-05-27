@@ -99,7 +99,7 @@ public class Link extends HtmlElement{
 	
 	@Override
 	public String toString() {
-		return "Link [text=" + text + ", xpath=" + xpath
+		return "Link [text=" + text + ", xpath=" + xpath + ", xpath_by_id=" + xpath_by_id
 				+ ", visualInfoOfHtmlElement=" + visualInfoOfHtmlElement
 				+ ", getTag()=" + getTag() + ", getAttributesMap()="
 				+ getAttributesMap() + "]";
