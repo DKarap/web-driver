@@ -1,8 +1,8 @@
 package org.webdriver;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 import org.webdriver.core.Driver;
 import org.webdriver.core.GhostDriver;
 import org.webdriver.domain.FindElementBy;
@@ -53,6 +54,17 @@ public class GhostDriverTest {
             ghostDriver = null;
         }
     }
+    
+
+    @Test
+    public void testGetWebElement(){
+    	final String url = "./data/test.html";
+    	ghostDriver.get(url);
+        
+    	WebElement webElement = ghostDriver.getWebElement(FindElementBy.xpath, "/html[1]/body[1]/div[1]/footer[1]/div[3]/div[1]/div[1]");
+	    assertTrue("failed to find link..",webElement!=null);
+	 }
+
     
     
     @Test

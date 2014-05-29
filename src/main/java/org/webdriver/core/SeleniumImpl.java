@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.InvalidSelectorException;
@@ -357,7 +358,7 @@ public class SeleniumImpl implements Driver {
 					
 					
 					// issue #12
-					getImgChildElelentTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
+					getImgChildElementTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
 					
 					
 					//construct and add link to final output list
@@ -371,8 +372,62 @@ public class SeleniumImpl implements Driver {
 		return linkList;
 	}
 	
+	@Override
+    public List<String> getWebElementChildsText(WebElement webElement)throws WebDriverException{
+    	List<String> clids_text_list = new ArrayList<String>();
+		try{
+			List<WebElement> child_elements = webElement.findElements(By.xpath(".//*"));
+			for(WebElement child_element : child_elements){
+				if(!child_element.getText().isEmpty())
+					clids_text_list.add(StringUtils.chomp(child_element.getText()).replaceAll("\\s+", " ").trim());
+			}
+		}catch(NoSuchElementException e){
+			return clids_text_list;
+		}
+		return clids_text_list;
+    }
+
+	@Override
+	public Link getLink(FindElementBy by, String value, Collection<String> IMG_ATTR_WITH_TEXT_LIST) throws WebDriverException{
+		try{
+			WebElement webElement = findElement(by, value);
+			if(!webElement.isDisplayed() || !webElement.isEnabled())
+				return null;
+			String tagName = webElement.getTagName();
+			String anchorText = webElement.getText();
+			Map<String,String> elementAttrMap = getElementAttributes(webElement);
+			getImgChildElementTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
+			return new Link(tagName, elementAttrMap, anchorText, null, null, null);			
+		}catch(StaleElementReferenceException e){
+			log_buf.append("Current element changed..."+e.getMessage()+"\n");
+			return null;
+		}catch(NoSuchElementException e){
+			log_buf.append("Fail to find the  element:"+e.getLocalizedMessage()+"\n");
+			return null;
+		}
+	}
+
+
+
+	@Override
+	public WebElement getWebElement(FindElementBy by, String value)throws WebDriverException {
+		try{
+			WebElement webElement = findElement(by, value);
+			if(!webElement.isDisplayed() || !webElement.isEnabled())
+				return null;
+			return webElement;			
+		}catch(StaleElementReferenceException e){
+			log_buf.append("Current element changed..."+e.getMessage()+"\n");
+			return null;
+		}catch(NoSuchElementException e){
+			log_buf.append("Fail to find the  element:"+e.getLocalizedMessage()+"\n");
+			return null;
+		}
+	}
+
+	
 	//check the child elements which one is an img, and then retrieve and save the predefined attributes
-	private void getImgChildElelentTextAtributesValue(WebElement webElement, Map<String,String> elementAttrMap, Collection<String> IMG_ATTR_WITH_TEXT_LIST)throws WebDriverException{
+	private void getImgChildElementTextAtributesValue(WebElement webElement, Map<String,String> elementAttrMap, Collection<String> IMG_ATTR_WITH_TEXT_LIST)throws WebDriverException{
 		try{
 			List<WebElement> child_elements = webElement.findElements(By.xpath(".//*"));
 			for(WebElement img_child_element : child_elements){
@@ -496,26 +551,6 @@ public class SeleniumImpl implements Driver {
 	}
 
 
-
-	@Override
-	public Link getLink(FindElementBy by, String value, Collection<String> IMG_ATTR_WITH_TEXT_LIST) {
-		try{
-			WebElement webElement = findElement(by, value);
-			if(!webElement.isDisplayed() || !webElement.isEnabled())
-				return null;
-			String tagName = webElement.getTagName();
-			String anchorText = webElement.getText();
-			Map<String,String> elementAttrMap = getElementAttributes(webElement);
-			getImgChildElelentTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
-			return new Link(tagName, elementAttrMap, anchorText, null, null, null);			
-		}catch(StaleElementReferenceException e){
-			log_buf.append("Current element changed..."+e.getMessage()+"\n");
-			return null;
-		}catch(NoSuchElementException e){
-			log_buf.append("Fail to find the  element:"+e.getLocalizedMessage()+"\n");
-			return null;
-		}
-	}
 
 
 }
