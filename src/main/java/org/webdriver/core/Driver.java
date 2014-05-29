@@ -156,7 +156,16 @@ public interface Driver {
 	
 	
 	
-	
+
+	/**
+	 * finmd the link element in the current pgae that the driver points and return it
+	 * @param by the method that we use to find the element for click (xpath,name,id,etc...)
+ 	 * @param value the value of the element that we look for to click
+	 * @return Link that exist in the current page abd was found with the given method, otherwise null
+ 	 * @throws WebDriverException If something fucked up happened with the webdriver  
+	 */
+	public Link getLink(FindElementBy by, String value, Collection<String> IMG_ATTR_WITH_TEXT_LIST);
+
 	
 	/**
 	 * Return all the links of the current web page after the element which is found with the given method;if we want all the links then simply choose the body element by tag name 

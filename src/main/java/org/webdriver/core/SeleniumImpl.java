@@ -496,4 +496,26 @@ public class SeleniumImpl implements Driver {
 	}
 
 
+
+	@Override
+	public Link getLink(FindElementBy by, String value, Collection<String> IMG_ATTR_WITH_TEXT_LIST) {
+		try{
+			WebElement webElement = findElement(by, value);
+			if(!webElement.isDisplayed() || !webElement.isEnabled())
+				return null;
+			String tagName = webElement.getTagName();
+			String anchorText = webElement.getText();
+			Map<String,String> elementAttrMap = getElementAttributes(webElement);
+			getImgChildElelentTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
+			return new Link(tagName, elementAttrMap, anchorText, null, null, null);			
+		}catch(StaleElementReferenceException e){
+			log_buf.append("Current element changed..."+e.getMessage()+"\n");
+			return null;
+		}catch(NoSuchElementException e){
+			log_buf.append("Fail to find the  element:"+e.getLocalizedMessage()+"\n");
+			return null;
+		}
+	}
+
+
 }

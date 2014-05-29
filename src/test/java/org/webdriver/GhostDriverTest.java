@@ -53,6 +53,18 @@ public class GhostDriverTest {
             ghostDriver = null;
         }
     }
+    
+    
+    @Test
+    public void testGetLink(){
+    	final String url = "./data/test.html";
+    	ghostDriver.get(url);
+        
+	    Link link = ghostDriver.getLink(FindElementBy.xpath, "/html[1]/body[1]/div[1]/div[3]/div[2]/div[1]/div[1]/a[2]", new ArrayList<String>());
+	    assertTrue("failed to find link..",link!=null);
+	 }
+
+    
 
     @Test
     public void testGetTimeOutException() throws Exception{
