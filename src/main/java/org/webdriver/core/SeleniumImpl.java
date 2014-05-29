@@ -410,7 +410,7 @@ public class SeleniumImpl implements Driver {
 
 
 	@Override
-	public WebElement getWebElement(FindElementBy by, String value)throws WebDriverException {
+	public WebElement getWebElement(FindElementBy by, String value) throws WebDriverException {
 		try{
 			WebElement webElement = findElement(by, value);
 			if(!webElement.isDisplayed() || !webElement.isEnabled())
