@@ -372,13 +372,14 @@ public class SeleniumImpl implements Driver {
 		return linkList;
 	}
 	
+	//TODO issue #25
 	@Override
     public List<String> getWebElementChildsText(WebElement webElement)throws WebDriverException{
     	List<String> clids_text_list = new ArrayList<String>();
 		try{
 			List<WebElement> child_elements = webElement.findElements(By.xpath(".//*"));
 			for(WebElement child_element : child_elements){
-				if(!child_element.getText().isEmpty())
+				if(child_element.getText() != null && !child_element.getText().isEmpty())
 					clids_text_list.add(StringUtils.chomp(child_element.getText()).replaceAll("\\s+", " ").trim());
 			}
 		}catch(NoSuchElementException e){
