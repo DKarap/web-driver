@@ -215,4 +215,7 @@ public interface Driver {
 	public void switchToNewWindow(boolean closeCurrrentWindow);	
 	
 	
+	public void maximizeBrowserWindow();
+	public void setDimensionOfBrowserWindow(int x, int y);
+
 }

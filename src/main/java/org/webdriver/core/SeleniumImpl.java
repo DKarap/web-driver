@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -336,7 +337,7 @@ public class SeleniumImpl implements Driver {
 				try{
 					//TODO issue #21 - skip invisible elements 
 					if(!webElement.isDisplayed() || !webElement.isEnabled()){
-						//System.out.println("is not displayed:"+webElement.getText()+"\t"+webElement.getAttribute("id"));
+						System.out.println("is not displayed:"+webElement.getText()+"\t"+webElement.getAttribute("alt"));
 						continue;
 					}
 					
@@ -582,6 +583,18 @@ public class SeleniumImpl implements Driver {
     	}
 
 		
+	}
+
+	@Override
+	public void maximizeBrowserWindow() {
+		this.webDriver.manage().window().maximize();
+	}
+
+
+
+	@Override
+	public void setDimensionOfBrowserWindow(int x, int y) {
+		this.webDriver.manage().window().setSize(new Dimension(x,y));
 	}
 
 }

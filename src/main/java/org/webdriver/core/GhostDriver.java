@@ -118,25 +118,32 @@ public class GhostDriver extends SeleniumImpl{
 	
 	
 	public static void main(String args[]) throws Exception{
+		
+		
 		//attribute names that include valuable text in image elements
 		ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title","name", "id")).build();
 
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
-
+	    ghostDriver.setDimensionOfBrowserWindow(1920,1080);
 //		final String url = "http://bethefuture.nl/vacatures-2/";
-		final String url = "http://www.textkernel.com";
+		final String url = "http://www.careers.macquarie.com/jobSearch.asp?stp=WEBSITE&lLocationGroupID_Expand=1";
+		
 		
 
 		try{
+			
+
+	        
         	//1. get page
         	System.out.println("\tgeturl");
     		ghostDriver.get(url);
     		
-    		boolean success = ghostDriver.clickElement(FindElementBy.xpath, "/HTML[1]/BODY[1]/DIV[1]/DIV[4]/DIV[2]/DIV[1]/DIV[1]/H3[1]/A[1]", true);
-    		System.out.println("\tsuccess:"+success+"\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
-    		ghostDriver.closeAllOtherOpenWindows();
-    		System.out.println("\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
+    		
+//    		boolean success = ghostDriver.clickElement(FindElementBy.xpath, "/HTML[1]/BODY[1]/DIV[1]/DIV[4]/DIV[2]/DIV[1]/DIV[1]/H3[1]/A[1]", true);
+//    		System.out.println("\tsuccess:"+success+"\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
+//    		ghostDriver.closeAllOtherOpenWindows();
+//    		System.out.println("\topenWindows:"+ghostDriver.getNumberOfOpenWindows());
     		
     		
     		//2. get page source code
@@ -151,10 +158,10 @@ public class GhostDriver extends SeleniumImpl{
         	System.out.println("\turl:"+ghostDriver.getCurrentUrl());
     		//4. get links
     		System.out.println("\tget links");
-        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "body", Arrays.asList("a"),IMG_ATTR_WITH_TEXT_LIST);
+        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", Arrays.asList("a"),IMG_ATTR_WITH_TEXT_LIST);
         	System.out.println("\t#links:"+ links.size());
         	for(Link l:links)
-        		System.out.println(l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
+        		System.out.println(l.getText()+"\t"+l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
 
     		//5. get frames
         	System.out.println("\tget frames");
