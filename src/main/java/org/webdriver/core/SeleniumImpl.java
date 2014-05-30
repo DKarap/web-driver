@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -125,12 +126,10 @@ public class SeleniumImpl implements Driver {
         	if (!handle.equals(current)) {
         		
         		this.webDriver.switchTo().window(handle);
-        		System.out.println("opened window:"+getCurrentUrl());
 //				closeAlerts();
 
                 this.webDriver.close();
                 this.webDriver.switchTo().window(current);
-                System.out.println("current:"+getCurrentUrl());
 //				closeAlerts();
             }
         }
@@ -372,7 +371,7 @@ public class SeleniumImpl implements Driver {
 		return linkList;
 	}
 	
-	//TODO issue #25
+	//TODO issue #25 #21
 	@Override
     public List<String> getWebElementChildsText(WebElement webElement)throws WebDriverException{
     	List<String> clids_text_list = new ArrayList<String>();
@@ -553,5 +552,36 @@ public class SeleniumImpl implements Driver {
 
 
 
+	@Override
+	public String getCurrentWindowHandle() throws WebDriverException{
+		return this.webDriver.getWindowHandle();
+	}
+
+
+
+	@Override
+	public void switchToWindow(String handle) throws WebDriverException {
+		this.webDriver.switchTo().window(handle);
+	}
+
+
+
+	@Override
+	public void switchToNewWindow(boolean closeCurrrentWindow) throws WebDriverException{
+		String current_window_handle = getCurrentWindowHandle();
+    	Set<String> windowsH = this.webDriver.getWindowHandles();
+    	if(windowsH.size()>1){
+	        for (String handle : windowsH) {
+	        	if (!handle.equals(current_window_handle)) {
+	        		if(closeCurrrentWindow)
+	        			this.webDriver.close();
+	        		//switch to the new window..
+	        		this.webDriver.switchTo().window(handle);
+	            }
+	        }
+    	}
+
+		
+	}
 
 }

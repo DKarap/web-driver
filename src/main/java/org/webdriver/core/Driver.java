@@ -194,5 +194,25 @@ public interface Driver {
  	 * @throws WebDriverException If something fucked up happened with the webdriver  
 	 */
 	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST);
+
+	/**
+	 * @return String the name of the current window handle that the webdriver points to
+	 * @throws WebDriverException If something fucked up happened with the webdriver  
+	 */
+	public String getCurrentWindowHandle();
+	
+	/**
+	 * @param String the name of the  window handle that we want to switch
+	 * @throws WebDriverException If something fucked up happened with the webdriver  
+	 */	
+	public void switchToWindow(String handle);	
+	
+	/**
+	 * switch from the current window to the other opened one
+	 * @param closeCurrrentWindow 
+	 * @throws WebDriverException If something fucked up happened with the webdriver  
+	 */	
+	public void switchToNewWindow(boolean closeCurrrentWindow);	
+	
 	
 }
