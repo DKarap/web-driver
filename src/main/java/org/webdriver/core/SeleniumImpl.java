@@ -337,7 +337,7 @@ public class SeleniumImpl implements Driver {
 				try{
 					//TODO issue #21 - skip invisible elements 
 					if(!webElement.isDisplayed() || !webElement.isEnabled()){
-						System.out.println("is not displayed:"+webElement.getText()+"\t"+webElement.getAttribute("alt"));
+						//System.out.println("is not displayed:"+webElement.getText()+"\t"+webElement.getAttribute("alt"));
 						continue;
 					}
 					
