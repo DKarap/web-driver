@@ -1,5 +1,7 @@
 package org.webdriver.core;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -70,10 +72,10 @@ public class SeleniumImpl implements Driver {
 					"}"+
 					"return GetMetaValue(arguments[0]);", webDriver.findElement(By.tagName("html")));
 		}catch(NoSuchElementException e){
-			log_buf.append("Fail to find the html initial element in order to get the page description via js:"+e.getLocalizedMessage()+"\n");
+			log_buf.append("Fail to find the html initial element in order to get the page description via js:"+getStackTrace(e)+"\n");
 			return description;
-		}catch(WebDriverException exception){
-			log_buf.append("Fail to find the description of the page:"+exception.getLocalizedMessage()+"\n");
+		}catch(WebDriverException e){
+			log_buf.append("Fail to find the description of the page:"+getStackTrace(e)+"\n");
 			return description;
 		}
 		return description;
@@ -103,11 +105,11 @@ public class SeleniumImpl implements Driver {
 		try{
 			webDriver.get(url);
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
-		}catch(TimeoutException timeoutException){
-			log_buf.append("Timeout during page loading:"+url+"\tException:"+timeoutException.getMessage()+"\n");
+		}catch(TimeoutException e){
+			log_buf.append("Timeout during page loading:"+url+"\tException:"+getStackTrace(e)+"\n");
 			return false;
 		} catch (InterruptedException e) {
-			log_buf.append("InterruptedException during page loading:"+url+"\tException:"+e.getMessage()+"\n");
+			log_buf.append("InterruptedException during page loading:"+url+"\tException:"+getStackTrace(e)+"\n");
 			return false;
 		} 
 		return true;
@@ -150,10 +152,10 @@ public class SeleniumImpl implements Driver {
 		try{
 			title = (String) js.executeScript(" return document.title;", webDriver.findElement(By.tagName("html")));
 		}catch(NoSuchElementException e){
-			log_buf.append("Fail to find the html initial element in order to get the page title via js:"+e.getLocalizedMessage()+"\n");
+			log_buf.append("Fail to find the html initial element in order to get the page title via js:"+getStackTrace(e)+"\n");
 			return title;
-		}catch(WebDriverException exception){
-			log_buf.append("Fail to find the title of the page:"+exception.getLocalizedMessage()+"\n");
+		}catch(WebDriverException e){
+			log_buf.append("Fail to find the title of the page:"+getStackTrace(e)+"\n");
 			return title;
 		}
 		return title;
@@ -178,7 +180,7 @@ public class SeleniumImpl implements Driver {
 			initialElement = findElement(by, value);
 			selectElementList	= initialElement.findElements(By.tagName("select"));
 		}catch(NoSuchElementException e){
-			log_buf.append("Fail to find the initial element or page desnt include select elements:"+e.getLocalizedMessage()+"\n");
+			log_buf.append("Fail to find the initial element or page desnt include select elements:"+getStackTrace(e)+"\n");
 			return;
 		}
 		
@@ -189,7 +191,7 @@ public class SeleniumImpl implements Driver {
 			try{
 				allCurrentOptions = selectElement.findElements(By.tagName("option"));
 			}catch(NoSuchElementException e){
-				log_buf.append("Current select element doesnt include options..continue with next select element:"+e.getMessage()+"\n");
+				log_buf.append("Current select element doesnt include options..continue with next select element:"+getStackTrace(e)+"\n");
 				continue;
 			}
 			
@@ -204,7 +206,7 @@ public class SeleniumImpl implements Driver {
 					try{
 						option.click();
 					}catch(StaleElementReferenceException e){
-						log_buf.append("Exception with the selected option element:"+e.getMessage()+"\n");
+						log_buf.append("Exception with the selected option element:"+getStackTrace(e)+"\n");
 						continue;
 					}
 					break;
@@ -232,13 +234,13 @@ public class SeleniumImpl implements Driver {
 			
 			
 		}catch(NoSuchFrameException e){
-			log_buf.append("Exception durring switchToFrame:"+e.getMessage()+"\n");
+			log_buf.append("Exception durring switchToFrame:"+getStackTrace(e)+"\n");
 			return false;
 		}catch(ClassCastException e){
-			log_buf.append("Exception durring switchToFrame:"+e.getMessage()+"\n");
+			log_buf.append("Exception durring switchToFrame:"+getStackTrace(e)+"\n");
 			return false;
 		} catch (InterruptedException e) {
-			log_buf.append("InterruptedException during switchToFrame:"+e.getMessage()+"\n");
+			log_buf.append("InterruptedException during switchToFrame:"+getStackTrace(e)+"\n");
 			return false;
 		}
 		return true;
@@ -258,7 +260,7 @@ public class SeleniumImpl implements Driver {
 			try{
 				elementsList = webDriver.findElements(By.tagName(frameTagName));
 			}catch(NoSuchElementException e){
-				log_buf.append("Current page doesnt include "+frameTagName+" tags - continue with the next frame tag:"+e.getMessage()+"\n");
+				log_buf.append("Current page doesnt include "+frameTagName+" tags - continue with the next frame tag:"+getStackTrace(e)+"\n");
 				continue;
 			}
 			
@@ -290,19 +292,19 @@ public class SeleniumImpl implements Driver {
 			Thread.sleep(THREAD_SLEEP_AFTER_STATE_CHANGE);
 			
 		}catch(NoSuchElementException e){
-			log_buf.append("NoSuchElementException durring clickLink:"+e.getMessage()+"\n");
+			log_buf.append("NoSuchElementException durring clickLink:"+getStackTrace(e)+"\n");
 			return false;
 		}catch(StaleElementReferenceException e){
-			log_buf.append("StaleElementReferenceException durring clickLink:"+e.getMessage()+"\n");
+			log_buf.append("StaleElementReferenceException durring clickLink:"+getStackTrace(e)+"\n");
 			return false;
 		} catch (InterruptedException e) {
-			log_buf.append("InterruptedException during clickLink:"+e.getMessage()+"\n");
+			log_buf.append("InterruptedException during clickLink:"+getStackTrace(e)+"\n");
 			return false;
 		} catch (ElementNotVisibleException e) {
-			log_buf.append("ElementNotVisibleException during clickLink:"+e.getMessage()+"\n");
+			log_buf.append("ElementNotVisibleException during clickLink:"+getStackTrace(e)+"\n");
 			return false;
-		}catch(TimeoutException timeoutException){
-			log_buf.append("Timeout during clickLink\tException:"+timeoutException.getMessage()+"\n");
+		}catch(TimeoutException e){
+			log_buf.append("Timeout during clickLink\tException:"+getStackTrace(e)+"\n");
 			return false;
 		}
 
@@ -320,7 +322,7 @@ public class SeleniumImpl implements Driver {
 		try{
 			initialElement = findElement(by, value);
 		}catch(NoSuchElementException e){
-			log_buf.append("Fail to find the initial element:"+e.getLocalizedMessage()+"\n");
+			log_buf.append("Fail to find the initial element:"+getStackTrace(e)+"\n");
 			return linkList;
 		}
 		
@@ -329,7 +331,7 @@ public class SeleniumImpl implements Driver {
 			try{
 				elementsList = initialElement.findElements(By.tagName(linkTagName));
 			}catch(NoSuchElementException e){
-				log_buf.append("Current page doesnt include "+linkTagName+" tag - continue with next tag:"+e.getMessage()+"\n");
+				log_buf.append("Current page doesnt include "+linkTagName+" tag - continue with next tag:"+getStackTrace(e)+"\n");
 				continue;
 			}
 			
@@ -364,7 +366,7 @@ public class SeleniumImpl implements Driver {
 					//construct and add link to final output list
 					linkList.add(new Link(tagName, elementAttrMap, anchorText, xpath, xpath_by_id, visualInfoOfHtmlElement));
 				}catch(StaleElementReferenceException e){
-					log_buf.append("Current element changed..."+e.getMessage()+"\n");
+					log_buf.append("Current element changed..."+getStackTrace(e)+"\n");
 					continue;
 				}
 			}
@@ -400,10 +402,10 @@ public class SeleniumImpl implements Driver {
 			getImgChildElementTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
 			return new Link(tagName, elementAttrMap, anchorText, null, null, null);			
 		}catch(StaleElementReferenceException e){
-			log_buf.append("Current element changed..."+e.getMessage()+"\n");
+			log_buf.append("Current element changed..."+getStackTrace(e)+"\n");
 			return null;
 		}catch(NoSuchElementException e){
-			log_buf.append("Fail to find the  element:"+e.getLocalizedMessage()+"\n");
+			log_buf.append("Fail to find the  element:"+getStackTrace(e)+"\n");
 			return null;
 		}
 	}
@@ -418,10 +420,10 @@ public class SeleniumImpl implements Driver {
 				return null;
 			return webElement;			
 		}catch(StaleElementReferenceException e){
-			log_buf.append("Current element changed..."+e.getMessage()+"\n");
+			log_buf.append("Current element changed..."+getStackTrace(e)+"\n");
 			return null;
 		}catch(NoSuchElementException e){
-			log_buf.append("Fail to find the  element:"+e.getLocalizedMessage()+"\n");
+			log_buf.append("Fail to find the  element:"+getStackTrace(e)+"\n");
 			return null;
 		}
 	}
@@ -526,7 +528,7 @@ public class SeleniumImpl implements Driver {
 					elementAttrMap.put(attrArr[0], attrArr[1]);
 			}
         }catch(Exception e){
-        	log_buf.append("Exception durring getElementAttributes:"+e.getMessage()+"\n");
+        	log_buf.append("Exception durring getElementAttributes:"+getStackTrace(e)+"\n");
         	return elementAttrMap;
         }
     	return elementAttrMap;	        
@@ -596,5 +598,13 @@ public class SeleniumImpl implements Driver {
 	public void setDimensionOfBrowserWindow(int x, int y) {
 		this.webDriver.manage().window().setSize(new Dimension(x,y));
 	}
+	
+    private String getStackTrace(final Throwable throwable) {
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw, true);
+        throwable.printStackTrace(pw);
+        return sw.getBuffer().toString();
+   }
+
 
 }
