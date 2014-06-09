@@ -599,12 +599,27 @@ public class SeleniumImpl implements Driver {
 		this.webDriver.manage().window().setSize(new Dimension(x,y));
 	}
 	
+	
+	
+	
     private String getStackTrace(final Throwable throwable) {
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw, true);
         throwable.printStackTrace(pw);
         return sw.getBuffer().toString();
    }
+
+
+
+	@Override
+	public boolean driverIsAlive() {
+		try{
+			webDriver.getCurrentUrl();
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
 
 
 }

@@ -23,6 +23,13 @@ import org.webdriver.domain.WebPage;
  */
 public interface Driver {
 
+	
+	/**
+	 * check if webdriver is alive
+	 * @return true if is alive, otherwise false 
+	 */
+	public boolean driverIsAlive();
+	
 	/**
 	 * get the WebPage that the driver currently points to
 	 * @return log msg in case something went bad with the driver 
