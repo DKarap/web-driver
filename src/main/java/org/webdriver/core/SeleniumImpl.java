@@ -612,7 +612,7 @@ public class SeleniumImpl implements Driver {
 
 
 	@Override
-	public boolean driverIsAlive() {
+	public boolean isAlive() {
 		try{
 			webDriver.getCurrentUrl();
 		}catch(Exception e){
