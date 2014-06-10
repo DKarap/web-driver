@@ -22,7 +22,6 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.webdriver.domain.FindElementBy;
 import org.webdriver.domain.FindFrameBy;
 import org.webdriver.domain.Frame;
@@ -616,7 +615,7 @@ public class SeleniumImpl implements Driver {
 	public boolean isAlive() {
 		try{
 			webDriver.getWindowHandles();
-		}catch(UnreachableBrowserException e){
+		}catch(WebDriverException e){
 			return false;
 		}
 		return true;
