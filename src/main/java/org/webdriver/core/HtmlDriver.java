@@ -4,31 +4,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.webdriver.domain.FindElementBy;
-import org.webdriver.domain.Link;
 
-import com.google.common.collect.ImmutableList;
-
-
-public class GhostDriver extends SeleniumImpl{
+public class HtmlDriver extends SeleniumImpl{
 
 	
 	
 
-	public GhostDriver(String CONFIG_FILE) throws Exception {
+	public HtmlDriver(String CONFIG_FILE) throws Exception {
 		super(prepareAndGetDriver(CONFIG_FILE));
 	}
 	
@@ -36,7 +25,7 @@ public class GhostDriver extends SeleniumImpl{
 
 	private static WebDriver prepareAndGetDriver(String CONFIG_FILE) throws Exception{
     	DesiredCapabilities sCaps = configure(CONFIG_FILE);
-        WebDriver webDriver = new PhantomJSDriver(sCaps);
+		WebDriver webDriver = new HtmlUnitDriver(true);
         
         /*
          * WebDriver settings... 
@@ -110,57 +99,4 @@ public class GhostDriver extends SeleniumImpl{
         return sCaps;
 	}	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static void main(String args[]) throws Exception{
-		
-		
-		//attribute names that include valuable text in image elements
-		ImmutableList<String> IMG_ATTR_WITH_TEXT_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("alt","src","value","title","name", "id")).build();
-		ImmutableList<String> LINK_TAG_NAME_LIST = new ImmutableList.Builder<String>().addAll(Arrays.asList("a","input")).build();
-
-	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
-	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
-	    ghostDriver.setDimensionOfBrowserWindow(2920,2080);
-//		final String url = "http://bethefuture.nl/vacatures-2/";
-		final String url = "http://www.avecodebondt.nl/86/werken-bij/vacatures/";
-		
-		
-
-		try{
-			
-
-	        
-        	//1. get page
-    		ghostDriver.get(url);
-    		
-    		
-        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
-        	System.out.println("\t#links:"+ links.size());
-        	for(Link l:links){
-        		System.out.println(l.getTag()+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
-        	}
-		}catch(WebDriverException e){
-    		e.printStackTrace();
-    	}
-	    ghostDriver.quit();
-	    
-	    a();
-	}
-	
-	public static void a(){
-		HtmlUnitDriver s=new HtmlUnitDriver();
-		
-		s.get("http://www.avecodebondt.nl/86/werken-bij/vacatures/");
-		List<WebElement> a = s.findElements(By.tagName("a"));
-		for(WebElement c: a)
-			System.out.println(c.getText()+"\t"+c.isDisplayed());
-		s.quit();
-	}
 }
