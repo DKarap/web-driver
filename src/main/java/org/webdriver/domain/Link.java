@@ -32,10 +32,10 @@ public class Link extends HtmlElement{
 
 
 	public String getClassification(){
-		return getAttributesMap().get("class");
+		return getAttributesMap().get("classification");
 	}
 	public void setClassification(String classification){
-		getAttributesMap().put("class", classification);
+		getAttributesMap().put("classification", classification);
 	}
 
 	public String getAttributeValue(String key){

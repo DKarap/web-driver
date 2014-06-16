@@ -337,9 +337,9 @@ public class SeleniumImpl implements Driver {
 			
 			for(WebElement webElement:elementsList){
 				try{
-					//TODO issue #21 - skip invisible elements 
+					//TODO issue #21 - skip invisible elements  - DONT TRY TO DISPLAY IMG ATTR here since we didnt retreive the yet!!! 
 					if(!webElement.isDisplayed() || !webElement.isEnabled()){
-						//System.out.println("is not displayed:"+webElement.getText()+"\t"+webElement.getAttribute("alt"));
+						//System.out.println("is not displayed:"+webElement.getText()+"\t"+webElement.getAttribute("href"));
 						continue;
 					}
 					

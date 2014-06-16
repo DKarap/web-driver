@@ -127,9 +127,10 @@ public class GhostDriver extends SeleniumImpl{
 
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
-	    ghostDriver.setDimensionOfBrowserWindow(2920,2080);
+	    ghostDriver.setDimensionOfBrowserWindow(1440, 900);
 //		final String url = "http://bethefuture.nl/vacatures-2/";
-		final String url = "http://www.avecodebondt.nl/86/werken-bij/vacatures/";
+//		final String url = "http://www.careers.macquarie.com/jobSearch.asp?stp=WEBSITE&lLocationGroupID_Expand=1";
+		final String url = "http://www.eximion.com/";
 		
 		
 
@@ -144,20 +145,20 @@ public class GhostDriver extends SeleniumImpl{
         	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
         	System.out.println("\t#links:"+ links.size());
         	for(Link l:links){
-        		System.out.println(l.getTag()+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
+        		System.out.println(l.getAttributeValue("href")+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t"+l.getAttributeValue("src")+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
         	}
 		}catch(WebDriverException e){
     		e.printStackTrace();
     	}
 	    ghostDriver.quit();
 	    
-	    a();
+	    //a();
 	}
 	
 	public static void a(){
 		HtmlUnitDriver s=new HtmlUnitDriver();
 		
-		s.get("http://www.avecodebondt.nl/86/werken-bij/vacatures/");
+		s.get("http://www.textkernel.com/jobs/");
 		List<WebElement> a = s.findElements(By.tagName("a"));
 		for(WebElement c: a)
 			System.out.println(c.getText()+"\t"+c.isDisplayed());
