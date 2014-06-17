@@ -139,14 +139,14 @@ public class GhostDriver extends SeleniumImpl{
 
 	        
         	//1. get page
-    		ghostDriver.get(url);
+//    		ghostDriver.get(url);
+			ghostDriver.getCurrentUrl();
     		
-    		
-        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
-        	System.out.println("\t#links:"+ links.size());
-        	for(Link l:links){
-        		System.out.println(l.getAttributeValue("href")+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t"+l.getAttributeValue("src")+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
-        	}
+//        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
+//        	System.out.println("\t#links:"+ links.size());
+//        	for(Link l:links){
+//        		System.out.println(l.getAttributeValue("href")+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t"+l.getAttributeValue("src")+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
+//        	}
 		}catch(WebDriverException e){
     		e.printStackTrace();
     	}

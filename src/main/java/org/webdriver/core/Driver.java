@@ -24,11 +24,11 @@ import org.webdriver.domain.WebPage;
 public interface Driver {
 
 	
-	/**
-	 * check if webdriver is alive
-	 * @return true if is alive, otherwise false 
-	 */
-	public boolean isAlive();
+//	/**
+//	 * check if webdriver is alive
+//	 * @return true if is alive, otherwise false 
+//	 */
+//	public boolean isAlive();
 	
 	/**
 	 * get the WebPage that the driver currently points to

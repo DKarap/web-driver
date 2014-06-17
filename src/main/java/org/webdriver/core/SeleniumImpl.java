@@ -611,15 +611,16 @@ public class SeleniumImpl implements Driver {
 
 
 
-	@Override
-	public boolean isAlive() {
-		try{
-			webDriver.getWindowHandles();
-		}catch(WebDriverException e){
-			return false;
-		}
-		return true;
-	}
+//	@Override
+//	public boolean isAlive() {
+//		try{
+//			webDriver.getWindowHandles();
+//		}catch(WebDriverException e){
+//			e.printStackTrace();
+//			return false;
+//		}
+//		return true;
+//	}
 
 
 }
