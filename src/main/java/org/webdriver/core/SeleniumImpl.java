@@ -611,16 +611,20 @@ public class SeleniumImpl implements Driver {
 
 
 
-//	@Override
-//	public boolean isAlive() {
-//		try{
-//			webDriver.getWindowHandles();
-//		}catch(WebDriverException e){
-//			e.printStackTrace();
-//			return false;
-//		}
-//		return true;
-//	}
+	@Override
+	public void closeAlerts() throws WebDriverException{
+		
+		js.executeScript("window.alert = function(msg){};");
+		js.executeScript("window.confirm = function(msg){return true;};");
+		js.executeScript("window.prompt = function(msg){return true;};");
+
+//
+//		js.executeScript("window.alert = function(msg){return true;};"
+//				                    + "window.confirm = function(msg){return true;};"
+//				                    + "window.prompt = function(msg){return true;};"
+//				                    + "window.alert = function(msg){return true;};");
+	}
 
 
+		
 }

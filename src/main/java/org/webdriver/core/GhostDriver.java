@@ -130,23 +130,26 @@ public class GhostDriver extends SeleniumImpl{
 	    ghostDriver.setDimensionOfBrowserWindow(1440, 900);
 //		final String url = "http://bethefuture.nl/vacatures-2/";
 //		final String url = "http://www.careers.macquarie.com/jobSearch.asp?stp=WEBSITE&lLocationGroupID_Expand=1";
-		final String url = "http://www.eximion.com/";
+		final String url = "http://www.warmteservice.nl";
 		
 		
 
 		try{
-			
-
-	        
         	//1. get page
-//    		ghostDriver.get(url);
-			ghostDriver.getCurrentUrl();
-    		
-//        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
-//        	System.out.println("\t#links:"+ links.size());
-//        	for(Link l:links){
-//        		System.out.println(l.getAttributeValue("href")+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t"+l.getAttributeValue("src")+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
-//        	}
+    		ghostDriver.get(url);
+			
+			ghostDriver.closeAlerts();
+//			System.out.println("\t#url:"+ ghostDriver.getCurrentUrl());			
+//			ghostDriver.clickElement(FindElementBy.xpath, "/html[1]/body[1]/div[8]/div[2]/table[1]/tbody[1]/tr[1]/td[2]/a[1]", false);
+			
+			boolean s = ghostDriver.clickElement(FindElementBy.xpath, "/html[1]/body[1]/div[1]/div[1]/footer[1]/div[1]/div[2]/ul[1]/li[5]/a[1]", false);
+			System.out.println(s+"\t#url:"+ ghostDriver.getCurrentUrl());
+			
+        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
+        	System.out.println("\t#links:"+ links.size());
+        	for(Link l:links){
+        		System.out.println(l.getAttributeValue("href")+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t"+l.getAttributeValue("src")+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
+        	}
 		}catch(WebDriverException e){
     		e.printStackTrace();
     	}
