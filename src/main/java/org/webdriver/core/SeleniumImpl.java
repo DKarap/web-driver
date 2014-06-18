@@ -617,7 +617,6 @@ public class SeleniumImpl implements Driver {
 		js.executeScript("window.alert = function(msg){};");
 		js.executeScript("window.confirm = function(msg){return true;};");
 		js.executeScript("window.prompt = function(msg){return true;};");
-
 //
 //		js.executeScript("window.alert = function(msg){return true;};"
 //				                    + "window.confirm = function(msg){return true;};"
