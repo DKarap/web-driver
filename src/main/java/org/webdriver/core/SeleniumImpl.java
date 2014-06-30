@@ -49,6 +49,9 @@ public class SeleniumImpl implements Driver {
 
 	
 
+
+
+
 	@Override
 	public String getLog() {
 		return this.log_buf.toString();

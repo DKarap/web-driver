@@ -30,6 +30,8 @@ public class FirefoxDriver extends SeleniumImpl{
         //set page load time out if there is the corresponding setting
         if(sCaps.getCapability("pageLoadTimeout") != null)
         	webDriver.manage().timeouts().pageLoadTimeout(Integer.parseInt((String)sCaps.getCapability("pageLoadTimeout")), TimeUnit.MILLISECONDS);
+        if(sCaps.getCapability("scriptTimeout") != null)
+        	webDriver.manage().timeouts().setScriptTimeout(Integer.parseInt((String)sCaps.getCapability("scriptTimeout")), TimeUnit.MILLISECONDS);
         //set implicitlyWait time out if there is the corresponding setting
         if(sCaps.getCapability("implicitlyWait") != null)
             webDriver.manage().timeouts().implicitlyWait(Integer.parseInt((String)sCaps.getCapability("implicitlyWait")), TimeUnit.MILLISECONDS);

@@ -44,6 +44,8 @@ public class GhostDriver extends SeleniumImpl{
         //set page load time out if there is the corresponding setting
         if(sCaps.getCapability("pageLoadTimeout") != null)
         	webDriver.manage().timeouts().pageLoadTimeout(Integer.parseInt((String)sCaps.getCapability("pageLoadTimeout")), TimeUnit.MILLISECONDS);
+        if(sCaps.getCapability("scriptTimeout") != null)
+        	webDriver.manage().timeouts().setScriptTimeout(Integer.parseInt((String)sCaps.getCapability("scriptTimeout")), TimeUnit.MILLISECONDS);
         //set implicitlyWait time out if there is the corresponding setting
         if(sCaps.getCapability("implicitlyWait") != null)
             webDriver.manage().timeouts().implicitlyWait(Integer.parseInt((String)sCaps.getCapability("implicitlyWait")), TimeUnit.MILLISECONDS);
@@ -127,17 +129,21 @@ public class GhostDriver extends SeleniumImpl{
 
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
+//	    Driver ghostDriver = new FirefoxDriver(CONFIG_FILE);
+
 	    ghostDriver.maximizeBrowserWindow();
-		final String url = "http://bethefuture.nl/vacatures-2/";
+//		final String url = "http://bethefuture.nl/vacatures-2/";
 //		final String url = "http://www.careers.macquarie.com/jobSearch.asp?stp=WEBSITE&lLocationGroupID_Expand=1";
-//		final String url = "https://hca.taleo.net/careersection/newskylinemadisoncampus/jobsearch.ftl";
+		final String url = "http://www.warmteservice.nl/";
 		
 		
 		
 		try{
-        	//1. get page
+
+    		
+    		//1. get page
     		ghostDriver.get(url);
-			
+
 			ghostDriver.closeAlerts();
 //			System.out.println("\t#url:"+ ghostDriver.getCurrentUrl());			
 //			ghostDriver.clickElement(FindElementBy.xpath, "/html[1]/body[1]/div[8]/div[2]/table[1]/tbody[1]/tr[1]/td[2]/a[1]", false);
@@ -145,11 +151,11 @@ public class GhostDriver extends SeleniumImpl{
 //			boolean s = ghostDriver.clickElement(FindElementBy.xpath, "/html[1]/body[1]/div[1]/div[1]/footer[1]/div[1]/div[2]/ul[1]/li[5]/a[1]", false);
 //			System.out.println(s+"\t#url:"+ ghostDriver.getCurrentUrl());
 			long start = System.currentTimeMillis();
-        	List<Link> links = ghostDriver.getLinks(FindElementBy.tagName, "html", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
+        	List<Link> links = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"requisitionListInterface.listRequisitionContainer\"]", LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
     		System.out.println("Time:"+(System.currentTimeMillis() - start));
         	System.out.println("\t#links:"+ links.size());
         	for(Link l:links){
-        		System.out.println(l.getAttributeValue("href")+"\t"+l.getText()+"\t"+l.getAttributesMap().keySet()+"\t"+l.getAttributeValue("src")+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
+        		System.out.println(l.getText()+"\t"+l.getAttributesMap().keySet()+"\t"+l.getAttributeValue("src")+"\t" +l.getXpath()+"\t" +l.getText()+"\t" +l.getText()+"\t"+l.getVisualInfoOfHtmlElement().toString());
         	}
 		}catch(WebDriverException e){
     		e.printStackTrace();
