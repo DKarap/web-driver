@@ -449,7 +449,9 @@ public class SeleniumImpl implements Driver {
 	}
 
 	private VisualInfoOfHtmlElement getVisualInfoOfHtmlElement(WebElement webElement) throws WebDriverException{
-		return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),webElement.getCssValue("font-size"),webElement.getCssValue("font-weight"),webElement.getCssValue("color"));
+		// @see #Issue7
+//		return new VisualInfoOfHtmlElement(webElement.getSize(), webElement.getLocation(), webElement.isDisplayed(),webElement.getCssValue("font-size"),webElement.getCssValue("font-weight"),webElement.getCssValue("color"));
+		return new VisualInfoOfHtmlElement(null, webElement.getLocation(), webElement.isDisplayed(),null,null,null);
 	}
 	
 	
