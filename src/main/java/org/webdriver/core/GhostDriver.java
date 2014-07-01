@@ -129,12 +129,13 @@ public class GhostDriver extends SeleniumImpl{
 
 	    final String CONFIG_FILE = "./config/ghostdriver/config.ini";
 	    Driver ghostDriver = new GhostDriver(CONFIG_FILE);
+	    ghostDriver.maximizeBrowserWindow();
 //	    Driver ghostDriver = new FirefoxDriver(CONFIG_FILE);
 
 	    ghostDriver.maximizeBrowserWindow();
 //		final String url = "http://bethefuture.nl/vacatures-2/";
 //		final String url = "http://www.careers.macquarie.com/jobSearch.asp?stp=WEBSITE&lLocationGroupID_Expand=1";
-		final String url = "http://www.warmteservice.nl/";
+		final String url = "https://hca.taleo.net/careersection/newskylinemadisoncampus/jobsearch.ftl";
 		
 		
 		
