@@ -97,6 +97,7 @@ public class GhostDriver extends SeleniumImpl{
          *  Disable "web-security", enable all possible "ssl-protocols" and "ignore-ssl-errors" for PhantomJSDriver
          */
         ArrayList<String> cliArgsCap = new ArrayList<String>();
+        cliArgsCap.add("--webdriver-loglevel=NONE");
         cliArgsCap.add("--web-security=false");
         cliArgsCap.add("--ssl-protocol=any");
         cliArgsCap.add("--ignore-ssl-errors=true");
@@ -106,7 +107,7 @@ public class GhostDriver extends SeleniumImpl{
          *  Control LogLevel for GhostDriver, via CLI arguments
          */
         sCaps.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, new String[] {
-            "--logLevel=" + (sConfig.getProperty("phantomjs_driver_loglevel") != null ? sConfig.getProperty("phantomjs_driver_loglevel") : "INFO")
+            "--logLevel=OFF"
         });
 
         return sCaps;
