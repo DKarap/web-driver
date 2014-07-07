@@ -101,6 +101,7 @@ public class GhostDriver extends SeleniumImpl{
         cliArgsCap.add("--web-security=false");
         cliArgsCap.add("--ssl-protocol=any");
         cliArgsCap.add("--ignore-ssl-errors=true");
+//        cliArgsCap.add("--disk-cache=true");        
         sCaps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
 
         /*

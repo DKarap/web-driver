@@ -383,6 +383,10 @@ public class SeleniumImpl implements Driver {
 					String xpath_by_id = getWebElementXpathById(webElement);
 					xpath_by_id = xpath_by_id != xpath ? xpath_by_id : null;
 					
+					//css path is not unique...
+					//String cssPath = getCssPath(webElement);
+					
+					
 					getImgChildElementTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
 					
 					
@@ -400,53 +404,6 @@ public class SeleniumImpl implements Driver {
 	
 
 	
-	public  List<Link> getLinksJsoup(String html,Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST){
-		Document document = Jsoup.parse(html);
-		List<Link> linkList = new ArrayList<Link>();
-		for(String linkTagName:LINK_TAG_NAME_LIST){
-			String select = null;
-			if(linkTagName.equalsIgnoreCase("a"))
-				select  = "a[href]";
-			else if(linkTagName.equalsIgnoreCase("li"))
-				select  = "li[onclick]";
-			else if(linkTagName.equalsIgnoreCase("link"))
-				select  = "link[href]";	
-			else
-				select  = linkTagName;
-			
-			Elements links = document.select(select);
-			
-			for (Element link : links) { 
-				String tagName = link.tagName();
-				String anchorText = link.text();
-
-				//get attributes Map
-				Map<String,String> elementAttrMap = new HashMap<String,String>();
-				link.attributes().forEach(attr -> {
-					elementAttrMap.put(attr.getKey(),attr.getValue());
-				});
-				
-				//in case of input element check if got invalid type
-				if(isInvalidType(tagName, elementAttrMap.get("type")))
-					continue;
-
-				
-				//get img child attributes
-				link.children().forEach( child -> {
-					if(child.tagName().equalsIgnoreCase("img")){
-						child.attributes().forEach(attr -> {
-							if(!elementAttrMap.containsKey(attr.getKey()))
-								elementAttrMap.put(attr.getKey(),attr.getValue());
-						});
-					}
-				});
-								
-				//construct and add link to final output list
-				linkList.add(new Link(tagName, elementAttrMap, anchorText, null, null, null)); 
-			}			
-		}
-		return linkList;
-	}
 
 	private  boolean isInvalidType(String tagName, String type){
 		boolean invalidType = false;
@@ -540,6 +497,35 @@ public class SeleniumImpl implements Driver {
 	}
 	
 	
+	public String getCssPath(WebElement element){
+		return (String) js.executeScript(
+				"function getCssExpression(element){"+
+					"var paths = [];"+
+					"for (; element && element.nodeType == 1; element = element.parentNode){"+
+						"var selector = getElementCSSSelector(element);"+						
+						"paths.splice(0, 0, selector);"+
+					"}"+
+					"return paths.length ?  paths.join(\" \") : null;"+
+				"}"+					
+				"function getElementCSSSelector(element){"+
+					"if (!element || !element.localName){"+
+						"return \"null\";"+
+					"}"+
+					"var label = element.localName.toLowerCase();"+
+					"if (element.id){"+
+						"label += \"#\" + element.id;"+
+					"}"+
+					
+					"if (element.classList && element.classList.length > 0){"+
+						"label += \".\" + element.classList.item(0);"+
+					"}"+
+					"return label;"+
+				"}"+			
+				"return getCssExpression(arguments[0]);",
+				element);
+	}
+	
+		
 	
 	private String getAbsoluteXpathFromWebElement(WebElement element) throws WebDriverException{
 		return (String) js.executeScript(
@@ -712,5 +698,52 @@ public class SeleniumImpl implements Driver {
 	}
 
 
-		
+	public  List<Link> getLinksJsoup(String html,Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST){
+		Document document = Jsoup.parse(html);
+		List<Link> linkList = new ArrayList<Link>();
+		for(String linkTagName:LINK_TAG_NAME_LIST){
+			String select = null;
+			if(linkTagName.equalsIgnoreCase("a"))
+				select  = "a[href]";
+			else if(linkTagName.equalsIgnoreCase("li"))
+				select  = "li[onclick]";
+			else if(linkTagName.equalsIgnoreCase("link"))
+				select  = "link[href]";	
+			else
+				select  = linkTagName;
+			
+			Elements links = document.select(select);
+			
+			for (Element link : links) { 
+				String tagName = link.tagName();
+				String anchorText = link.text();
+
+				//get attributes Map
+				Map<String,String> elementAttrMap = new HashMap<String,String>();
+				link.attributes().forEach(attr -> {
+					elementAttrMap.put(attr.getKey(),attr.getValue());
+				});
+				
+				//in case of input element check if got invalid type
+				if(isInvalidType(tagName, elementAttrMap.get("type")))
+					continue;
+
+				
+				//get img child attributes
+				link.children().forEach( child -> {
+					if(child.tagName().equalsIgnoreCase("img")){
+						child.attributes().forEach(attr -> {
+							if(!elementAttrMap.containsKey(attr.getKey()))
+								elementAttrMap.put(attr.getKey(),attr.getValue());
+						});
+					}
+				});
+								
+				//construct and add link to final output list
+				linkList.add(new Link(tagName, elementAttrMap, anchorText, null, null, null)); 
+			}			
+		}
+		return linkList;
+	}
+
 }
