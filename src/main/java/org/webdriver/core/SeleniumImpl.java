@@ -10,6 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ElementNotVisibleException;
@@ -28,6 +32,8 @@ import org.webdriver.domain.Frame;
 import org.webdriver.domain.Link;
 import org.webdriver.domain.VisualInfoOfHtmlElement;
 import org.webdriver.domain.WebPage;
+
+import com.google.common.collect.ImmutableList;
 
 public class SeleniumImpl implements Driver {
 
@@ -376,6 +382,69 @@ public class SeleniumImpl implements Driver {
 		}
 		return linkList;
 	}
+	
+	
+	public final static List<String> invlalidTypeOfLinks = ImmutableList.of("radio","checkbox","file","password","reset");
+
+	
+	public  List<Link> getLinksJsoup(String html,Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST){
+		Document document = Jsoup.parse(html);
+		List<Link> linkList = new ArrayList<Link>();
+		for(String linkTagName:LINK_TAG_NAME_LIST){
+			String select = null;
+			if(linkTagName.equalsIgnoreCase("a"))
+				select  = "a[href]";
+			else if(linkTagName.equalsIgnoreCase("li"))
+				select  = "li[onclick]";
+			else if(linkTagName.equalsIgnoreCase("link"))
+				select  = "link[href]";	
+			else
+				select  = linkTagName;
+			
+			Elements links = document.select(select);
+			
+			for (Element link : links) { 
+				String tagName = link.tagName();
+				String anchorText = link.text();
+
+				//get attributes Map
+				Map<String,String> elementAttrMap = new HashMap<String,String>();
+				link.attributes().forEach(attr -> {
+					elementAttrMap.put(attr.getKey(),attr.getValue());
+				});
+				
+				//in case of input element check if got invalid type
+				if(isInvalidType(tagName, elementAttrMap.get("type")))
+					continue;
+
+				
+				//get img child attributes
+				link.children().forEach( child -> {
+					if(child.tagName().equalsIgnoreCase("img")){
+						child.attributes().forEach(attr -> {
+							if(!elementAttrMap.containsKey(attr.getKey()))
+								elementAttrMap.put(attr.getKey(),attr.getValue());
+						});
+					}
+				});
+								
+				//construct and add link to final output list
+				linkList.add(new Link(tagName, elementAttrMap, anchorText, null, null, null)); 
+			}			
+		}
+		return linkList;
+	}
+	
+	private  boolean isInvalidType(String tagName, String type){
+		boolean invalidType = false;
+		if(tagName.equalsIgnoreCase("input") && type!=null ){			
+			for(String invalid  : invlalidTypeOfLinks)
+				if(invalid.equals(type)) 
+					invalidType = true;				
+		}
+		return invalidType;
+	}
+
 	
 	//TODO issue #25 #21
 	@Override
