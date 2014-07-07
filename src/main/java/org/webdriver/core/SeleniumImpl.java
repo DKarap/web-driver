@@ -45,7 +45,9 @@ public class SeleniumImpl implements Driver {
 	//TODO these hardcoded settings must move out
 	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
 
-	
+	private final static List<String> invlalidTypeOfLinks = ImmutableList.of("radio","checkbox","file","password","reset");
+
+
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
 		super();
 		this.webDriver = webDriver;
@@ -327,6 +329,14 @@ public class SeleniumImpl implements Driver {
 	public List<Link> getLinks(FindElementBy by, Object value, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST) throws WebDriverException{
 		List<Link> linkList = new ArrayList<Link>();
 		
+//		Document document = null;
+//		try{
+//			document = Jsoup.parse(webDriver.getPageSource());
+//		}catch(Exception e){
+//			log_buf.append("Exception:"+getStackTrace(e)+"\n");
+//		}
+
+		
 		WebElement initialElement = null;
 		try{
 			initialElement = findElement(by, value);
@@ -362,13 +372,17 @@ public class SeleniumImpl implements Driver {
 					//get attributes Map
 					Map<String,String> elementAttrMap = getElementAttributes(webElement);
 					
+					//in case of input element check if got invalid type
+					if(isInvalidType(tagName, elementAttrMap.get("type")))
+						continue;
+
+
+										
 					//get the fucking XPATHS!!
 					String xpath = getAbsoluteXpathFromWebElement(webElement);
 					String xpath_by_id = getWebElementXpathById(webElement);
 					xpath_by_id = xpath_by_id != xpath ? xpath_by_id : null;
 					
-					
-					// issue #12
 					getImgChildElementTextAtributesValue(webElement, elementAttrMap,IMG_ATTR_WITH_TEXT_LIST);
 					
 					
@@ -384,7 +398,6 @@ public class SeleniumImpl implements Driver {
 	}
 	
 	
-	public final static List<String> invlalidTypeOfLinks = ImmutableList.of("radio","checkbox","file","password","reset");
 
 	
 	public  List<Link> getLinksJsoup(String html,Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST){
@@ -434,7 +447,7 @@ public class SeleniumImpl implements Driver {
 		}
 		return linkList;
 	}
-	
+
 	private  boolean isInvalidType(String tagName, String type){
 		boolean invalidType = false;
 		if(tagName.equalsIgnoreCase("input") && type!=null ){			
