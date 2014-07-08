@@ -216,7 +216,7 @@ public class SeleniumImpl implements Driver {
 					
 					try{
 						option.click();
-					}catch(StaleElementReferenceException e){
+					}catch(StaleElementReferenceException | TimeoutException e){
 						log_buf.append("Exception with the selected option element:"+getStackTrace(e)+"\n");
 						continue;
 					}
