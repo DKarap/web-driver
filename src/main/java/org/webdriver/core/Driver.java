@@ -127,7 +127,6 @@ public interface Driver {
 	 * @param by the method that we use to find the element which after it we will set the options to ALL, 
  	 * @param value the value of the method
   	 * @param textToSelect list of text(synonims) that we look for to select
- 	 * @throws WebDriverException If something fucked up happened with the webdriver  
 	 */
 	public void selectOptions(FindElementBy by, String value, Collection<String> textToSelect);
 	

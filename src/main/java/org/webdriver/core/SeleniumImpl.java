@@ -184,13 +184,13 @@ public class SeleniumImpl implements Driver {
 	
 
 	@Override
-	public void selectOptions(FindElementBy by, String value, Collection<String> textToSelect) throws WebDriverException{
+	public void selectOptions(FindElementBy by, String value, Collection<String> textToSelect) {
 		WebElement initialElement = null;
 		List<WebElement> selectElementList = null; 
 		try{
 			initialElement = findElement(by, value);
 			selectElementList	= initialElement.findElements(By.tagName("select"));
-		}catch(NoSuchElementException e){
+		}catch(WebDriverException e){
 			log_buf.append("Fail to find the initial element or page desnt include select elements:"+getStackTrace(e)+"\n");
 			return;
 		}
@@ -201,7 +201,7 @@ public class SeleniumImpl implements Driver {
 			List<WebElement> allCurrentOptions = null;
 			try{
 				allCurrentOptions = selectElement.findElements(By.tagName("option"));
-			}catch(NoSuchElementException e){
+			}catch(WebDriverException e){
 				log_buf.append("Current select element doesnt include options..continue with next select element:"+getStackTrace(e)+"\n");
 				continue;
 			}
@@ -216,7 +216,7 @@ public class SeleniumImpl implements Driver {
 					
 					try{
 						option.click();
-					}catch(StaleElementReferenceException | TimeoutException e){
+					}catch(WebDriverException e){
 						log_buf.append("Exception with the selected option element:"+getStackTrace(e)+"\n");
 						continue;
 					}
