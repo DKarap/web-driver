@@ -97,7 +97,7 @@ public class GhostDriver extends SeleniumImpl{
          *  Disable "web-security", enable all possible "ssl-protocols" and "ignore-ssl-errors" for PhantomJSDriver
          */
         ArrayList<String> cliArgsCap = new ArrayList<String>();
-        cliArgsCap.add("--webdriver-loglevel=NONE");
+        cliArgsCap.add("--webdriver-loglevel="+(sConfig.getProperty("phantomjs_driver_loglevel") != null ? sConfig.getProperty("phantomjs_driver_loglevel") : "NONE"));
         cliArgsCap.add("--web-security=false");
         cliArgsCap.add("--ssl-protocol=any");
         cliArgsCap.add("--ignore-ssl-errors=true");
