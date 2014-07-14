@@ -349,7 +349,7 @@ public class SeleniumImpl implements Driver {
 			List<WebElement> elementsList = null;
 			try{
 				elementsList = initialElement.findElements(By.tagName(linkTagName));
-			}catch(NoSuchElementException e){
+			}catch(NoSuchElementException | StaleElementReferenceException e){
 				log_buf.append("Current page doesnt include "+linkTagName+" tag - continue with next tag:"+getStackTrace(e)+"\n");
 				continue;
 			}
