@@ -374,9 +374,9 @@ public class SeleniumImpl implements Driver {
 					//get attributes Map
 					Map<String,String> elementAttrMap = getElementAttributes(webElement);
 					
-					//check if link got src or srcdoc	attributes,otherwise skip them
-					if(elementAttrMap.get("src") == null && elementAttrMap.get("srcdoc") == null)
-						continue;
+					//TODO check if link got src or srcdoc	attributes,otherwise skip them
+//					if(elementAttrMap.get("src") == null && elementAttrMap.get("srcdoc") == null)
+//						continue;
 
 					
 					//in case of input element check if got invalid type
