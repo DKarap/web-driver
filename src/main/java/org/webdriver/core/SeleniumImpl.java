@@ -281,6 +281,10 @@ public class SeleniumImpl implements Driver {
 				//get element's attr; safe process with respect to exception handling
 				Map<String,String> elementAttrMap = getElementAttributes(webElement);
 				
+				//check if frame git src or srcdoc	attributes,otherwise skip them
+				if(elementAttrMap.get("src")==null && elementAttrMap.get("srcdoc")==null)
+					continue;
+				
 				//construct and add frame to final output list
 				frameList.add(new Frame(tagName, elementAttrMap, index_of_last_frame));
 				index_of_last_frame++;
@@ -366,18 +370,23 @@ public class SeleniumImpl implements Driver {
 					String tagName = webElement.getTagName();
 					String anchorText = webElement.getText();
 					
-					//visual info of current element
-					VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
 					
 					//get attributes Map
 					Map<String,String> elementAttrMap = getElementAttributes(webElement);
+					
+					//check if link got src or srcdoc	attributes,otherwise skip them
+					if(elementAttrMap.get("src") == null && elementAttrMap.get("srcdoc") == null)
+						continue;
+
 					
 					//in case of input element check if got invalid type
 					if(isInvalidType(tagName, elementAttrMap.get("type")))
 						continue;
 
 
-										
+					//visual info of current element
+					VisualInfoOfHtmlElement visualInfoOfHtmlElement = getVisualInfoOfHtmlElement(webElement);
+	
 					//get the fucking XPATHS!!
 					String xpath = getAbsoluteXpathFromWebElement(webElement);
 					String xpath_by_id = getWebElementXpathById(webElement);
