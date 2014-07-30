@@ -43,7 +43,7 @@ public class SeleniumImpl implements Driver {
 	private StringBuilder log_buf;//whatever catches exception happened save it to this buffer
 	
 	//TODO these hardcoded settings must move out
-	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 1000;
+	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 2000;
 
 	private final static List<String> invlalidTypeOfLinks = ImmutableList.of("radio","checkbox","file","password","reset");
 
@@ -483,6 +483,9 @@ public class SeleniumImpl implements Driver {
 	//check the child elements which one is an img, and then retrieve and save the predefined attributes
 	private void getImgChildElementTextAtributesValue(WebElement webElement, Map<String,String> elementAttrMap, Collection<String> IMG_ATTR_WITH_TEXT_LIST)throws WebDriverException{
 		try{
+//			List<WebElement> child_elements =  (new WebDriverWait(webDriver, 0))
+//			  .until(ExpectedConditions.visibilityOfAllElements(webElement.findElements(By.xpath(".//*"))));
+
 			List<WebElement> child_elements = webElement.findElements(By.xpath(".//*"));
 			for(WebElement img_child_element : child_elements){
 				if(img_child_element.getTagName().equalsIgnoreCase("img")){
