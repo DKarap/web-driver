@@ -1,8 +1,8 @@
 package org.webdriver;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,16 +127,20 @@ public class GhostDriverTest {
     
     @Test
     public void testSwitchToFrame(){
-    	final String url = "http://public.bakerhughes.com/taleo/taleoiframe.html";
+    	final String url = "http://nunzioweb.com/iframes-example.htm";
     	ghostDriver.get(url);
 	    
-	    boolean clickSuccess = ghostDriver.switchToFrame(FindFrameBy.nameOrId, "taleo-frame");
-	    assertTrue("failed to switch to fram by nameOrId..",clickSuccess);
+    	ghostDriver.getFrames(Arrays.asList("iframe")).forEach(f->{
+    		System.out.println(f.getIndex()+"\t"+f.getAttributesMap().get("src") );
+    		
+    	});
+	    boolean 	    clickSuccess = ghostDriver.switchToFrame(FindFrameBy.index, 0);
+	    assertTrue("failed to switch to fram by index..",clickSuccess);
     	System.out.println(ghostDriver.getTitle());
 	    System.out.println(ghostDriver.getCurrentUrl());
 	    
-	    assertEquals("failed to switch to frame..page or functionality broke..","https://bakerhughes.taleo.net/careersection/bhiexternal/moresearch.ftl?lang=en", ghostDriver.getCurrentUrl());
-	    assertEquals("failed to switch to frame..page or functionality broke..","Job Search", ghostDriver.getTitle());
+	    assertEquals("failed to switch to frame..page or functionality broke..","http://nunzioweb.com/001.htm", ghostDriver.getCurrentUrl());
+	    assertEquals("failed to switch to frame..page or functionality broke..","Nunzio's Little Place On The Web", ghostDriver.getTitle());
 	    assertTrue("failed to switch to frame by index..",clickSuccess);
 
 
@@ -159,8 +163,11 @@ public class GhostDriverTest {
     	ghostDriver.get(url);
 	    
 	    List<Link> linkList = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"p-navigation\"]/div",LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
+	    linkList.forEach(l->{
+	    	System.out.println(l.toString());
+	    });
 	    assertEquals("Get links failed or wikipedia changed..", 7, linkList.size());
-	    assertEquals("Computation xapth is broken or wiki changed..","/html[1]/body[1]/div[4]/div[2]/div[2]/div[1]/ul[1]/li[1]/a[1]",linkList.get(0).getXpath());
+	    assertEquals("Computation xapth is broken or wiki changed..","/html[1]/body[1]/div[5]/div[2]/div[2]/div[1]/ul[1]/li[1]/a[1]",linkList.get(0).getXpath());
 	    linkList = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"malaka\"]/div",LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
 	    assertEquals("Get links failed or wikipedia changed..", 0, linkList.size());
 
