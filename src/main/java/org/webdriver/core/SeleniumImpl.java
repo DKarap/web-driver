@@ -43,7 +43,7 @@ public class SeleniumImpl implements Driver {
 	private StringBuilder log_buf;//whatever catches exception happened save it to this buffer
 	
 	//TODO these hardcoded settings must move out
-	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 2000;
+	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 4000;
 
 	private final static List<String> invlalidTypeOfLinks = ImmutableList.of("radio","checkbox","file","password","reset");
 
