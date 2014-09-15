@@ -174,7 +174,10 @@ public class SeleniumImpl implements Driver {
 
 	@Override
 	public String getCurrentUrl() throws WebDriverException{
-		return webDriver.getCurrentUrl();
+		String url = null;
+		url = webDriver.getCurrentUrl();
+		url = trimLastSlash(url);
+		return url;
 	}
 
 	@Override
@@ -756,6 +759,12 @@ public class SeleniumImpl implements Driver {
 			}			
 		}
 		return linkList;
+	}
+
+	private String trimLastSlash(String text){
+		if(text!=null)
+			text = text.replaceAll("/$", "");
+		return text;
 	}
 
 }

@@ -21,7 +21,7 @@ public class WebPage {
 			List<Frame> frames, List<Link> links) {
 		super();
 		this.id = id;
-		this.url = trimLastSlash(url);
+		this.url = url;
 		this.title = title;
 		this.description = description;
 		this.sourceCode = sourceCode;
@@ -30,11 +30,6 @@ public class WebPage {
 		this.linksToThisWebPage = new ArrayList<Link>();
 	}
 
-	private String trimLastSlash(String text){
-		if(text!=null)
-			text = text.replaceAll("/$", "");
-		return text;
-	}
 
 	public String getClassification() {
 		return classification;
