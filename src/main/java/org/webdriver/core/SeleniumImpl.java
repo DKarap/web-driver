@@ -285,8 +285,10 @@ public class SeleniumImpl implements Driver {
 				Map<String,String> elementAttrMap = getElementAttributes(webElement);
 				
 				//check if frame git src or srcdoc	attributes,otherwise skip them
-				if(elementAttrMap.get("src")==null && elementAttrMap.get("srcdoc")==null)
+				if(elementAttrMap.get("src")==null && elementAttrMap.get("srcdoc")==null){
+					index_of_last_frame++;
 					continue;
+				}
 				
 				//construct and add frame to final output list
 				frameList.add(new Frame(tagName, elementAttrMap, index_of_last_frame));
