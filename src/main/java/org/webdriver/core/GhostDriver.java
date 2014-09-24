@@ -67,6 +67,9 @@ public class GhostDriver extends SeleniumImpl{
         sCaps.setJavascriptEnabled(true);
         sCaps.setCapability("takesScreenshot", sConfig.getProperty("takesScreenshot"));
         sCaps.setCapability("phantomjs.page.settings.loadImages", sConfig.getProperty("phantomjs_page_settings_loadImages"));
+        if(sConfig.getProperty("useragent")!=null)
+        	sCaps.setCapability("phantomjs.page.settings.userAgent", sConfig.getProperty("useragent"));
+        
         //replace that with the webdriver timeout setting: pageLoadTimeOut
         //sCaps.setCapability("phantomjs.page.settings.resourceTimeout", sConfig.getProperty("phantomjs_page_settings_resourceTimeout"));
         sCaps.setCapability("pageLoadTimeout", sConfig.getProperty("pageLoadTimeout"));
