@@ -166,8 +166,8 @@ public class GhostDriverTest {
 	    linkList.forEach(l->{
 	    	System.out.println(l.toString());
 	    });
-	    assertEquals("Get links failed or wikipedia changed..", 7, linkList.size());
-	    assertEquals("Computation xapth is broken or wiki changed..","/html[1]/body[1]/div[5]/div[2]/div[2]/div[1]/ul[1]/li[1]/a[1]",linkList.get(0).getXpath());
+	    assertEquals("Get links failed or wikipedia changed..", 7, linkList.size());	    														      
+	    assertEquals("Computation xapth is broken or wiki changed..","/html[1]/body[1]/div[4]/div[2]/div[2]/div[1]/ul[1]/li[1]/a[1]",linkList.get(0).getXpath());
 	    linkList = ghostDriver.getLinks(FindElementBy.xpath, "//*[@id=\"malaka\"]/div",LINK_TAG_NAME_LIST,IMG_ATTR_WITH_TEXT_LIST);
 	    assertEquals("Get links failed or wikipedia changed..", 0, linkList.size());
 
