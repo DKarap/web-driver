@@ -57,7 +57,11 @@ public class SeleniumImpl implements Driver {
 
 	
 
-
+	
+	@Override
+	public void goBack() throws WebDriverException{
+		this.webDriver.navigate().back();		
+	}
 
 
 	@Override
@@ -768,5 +772,6 @@ public class SeleniumImpl implements Driver {
 			text = text.replaceAll("/$", "");
 		return text;
 	}
+
 
 }

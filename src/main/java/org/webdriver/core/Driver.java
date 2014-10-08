@@ -54,6 +54,11 @@ public interface Driver {
 	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST);
 
 	
+	/**
+	 * Go back 
+ 	 * @throws WebDriverException If something fucked up happened with the webdriver
+	 */
+	public void goBack();
 	
 	/**
 	 * Load a new web page 
