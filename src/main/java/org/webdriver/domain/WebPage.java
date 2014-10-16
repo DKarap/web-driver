@@ -16,6 +16,8 @@ public class WebPage {
 	private String classification;
 	
 	
+	private List<String> xpaths_or_frame_index_to_this_page; //last one is the last link's xpath or frame's index that we follow to this page
+	
 
 	public WebPage(int id, String url, String title, String description, String sourceCode,
 			List<Frame> frames, List<Link> links) {
@@ -28,6 +30,7 @@ public class WebPage {
 		this.frames = frames;
 		this.links = links;
 		this.linksToThisWebPage = new ArrayList<Link>();
+		this.setXpaths_or_frame_index_to_this_page(new ArrayList<String>());
 	}
 
 
@@ -37,20 +40,6 @@ public class WebPage {
 
 	public void setClassification(String classification) {
 		this.classification = classification;
-	}
-
-
-	public List<Link> getLinksToThisWebPage() {
-		return linksToThisWebPage;
-	}
-
-
-	public void setLinksToThisWebPage(List<Link> linksToThisWebPage) {
-		this.linksToThisWebPage = linksToThisWebPage;
-	}
-
-	public void addLinkToThisWebPage(Link linkToThisWebPage) {
-		this.linksToThisWebPage.add(linkToThisWebPage);
 	}
 
 
@@ -96,6 +85,31 @@ public class WebPage {
 
 	public String getDescription() {
 		return description;
-	}	
-	
+	}
+
+
+//	public void setLinksToThisWebPage(List<Link> linksToThisWebPage) {
+//		this.linksToThisWebPage = linksToThisWebPage;
+//	}
+
+	public List<Link> getLinksToThisWebPage() {
+		return linksToThisWebPage;
+	}
+
+	public void addLinkToThisWebPage(Link linkToThisWebPage) {
+		this.linksToThisWebPage.add(linkToThisWebPage);
+	}
+
+
+	public List<String> getXpaths_or_frame_index_to_this_page() {
+		return xpaths_or_frame_index_to_this_page;
+	}
+
+
+	public void setXpaths_or_frame_index_to_this_page(List<String> xpaths_or_frame_index_to_this_page) {
+		this.xpaths_or_frame_index_to_this_page = xpaths_or_frame_index_to_this_page;
+	}
+
+
+
 }
