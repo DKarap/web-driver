@@ -46,6 +46,9 @@ public class SeleniumImpl implements Driver {
 	private final int THREAD_SLEEP_AFTER_STATE_CHANGE = 4000;
 
 	private final static List<String> invlalidTypeOfLinks = ImmutableList.of("radio","checkbox","file","password","reset");
+	private final static List<String> single_session_url_arr = ImmutableList.of("icims","brassring","hrs_hram.hrs_ce","tgwebhost");
+
+	
 
 
 	public SeleniumImpl(org.openqa.selenium.WebDriver webDriver) {
@@ -96,9 +99,39 @@ public class SeleniumImpl implements Driver {
 		return description;
 	}
 
+	@Override
+	public boolean goToWebPageViaUrlOrSeedUrl(String semantic_webpage_url, String seed_url, List<String> xpaths_or_frame_index_to_this_page) throws WebDriverException{
+		boolean success = true;
+		if(isWebPageSingleSession(semantic_webpage_url) && seed_url != null && xpaths_or_frame_index_to_this_page !=null && !xpaths_or_frame_index_to_this_page.isEmpty()){
+			success = goToWebPageViaSeedUrl(seed_url, xpaths_or_frame_index_to_this_page);
+		}
+		else
+			success = get(semantic_webpage_url);
+		return success;
+	}
+
+	
+	private boolean goToWebPageViaSeedUrl(String seed_url,List<String> xpaths_or_frame_index_to_this_state) throws WebDriverException {
+		boolean success = true;
+		success = this.get(seed_url);
+		if(!success)
+			return success;
+		for(int i=0;i<xpaths_or_frame_index_to_this_state.size();i++){
+			String xpath_or_id = xpaths_or_frame_index_to_this_state.get(i);
+			
+			if(xpath_or_id.startsWith("/"))
+				success = this.clickElement(FindElementBy.xpath, xpath_or_id, false);
+			else
+				success = this.switchToFrame(FindFrameBy.index, Integer.parseInt(xpath_or_id));
+			if(!success)
+				break;
+		}
+		return success;
+	}
+
 	
 	
-	
+
 	
 	@Override
 	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST) throws WebDriverException {
@@ -772,6 +805,13 @@ public class SeleniumImpl implements Driver {
 			text = text.replaceAll("/$", "");
 		return text;
 	}
-
-
+	
+	private boolean isWebPageSingleSession(String url) {
+		url = url.toLowerCase();		
+		for(String single_session_url:single_session_url_arr){
+			if(url.contains(single_session_url))
+				return true;
+		}
+		return false;
+	}
 }

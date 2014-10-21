@@ -26,7 +26,6 @@ public interface Driver {
 	
 	
 	
-	
 	/**
 	 * close alerts via JS
 	 *  
@@ -53,6 +52,17 @@ public interface Driver {
 	 */
 	public WebPage getCurrentWebPage(int id, Collection<String> FRAME_TAG_NAME_LIST, Collection<String> LINK_TAG_NAME_LIST, Collection<String> IMG_ATTR_WITH_TEXT_LIST);
 
+	
+	/**
+	 * Check if the given page is single session and if yes then go via clicks..
+	 * @param semantic_webpage_url 
+	 * @param seed_url
+	 * @param xpaths_or_frame_index_to_this_state
+	 * @return true if we manage go to page via url or xpaths, otherwise false
+	 * @throws WebDriverException If something fucked up happened with the webdriver
+	 */
+	public boolean goToWebPageViaUrlOrSeedUrl(String semantic_webpage_url, String seed_url,List<String> xpaths_or_frame_index_to_this_state);
+	
 	
 	/**
 	 * Go back 

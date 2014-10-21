@@ -14,7 +14,7 @@ public class WebPage {
 	private List<Link> links;
 	private List<Link> linksToThisWebPage;
 	private String classification;
-	
+
 	
 	private List<String> xpaths_or_frame_index_to_this_page; //last one is the last link's xpath or frame's index that we follow to this page
 	
@@ -103,6 +103,15 @@ public class WebPage {
 
 	public List<String> getXpaths_or_frame_index_to_this_page() {
 		return xpaths_or_frame_index_to_this_page;
+	}
+	public String getXpaths_or_frame_index_to_this_pageAsString() {
+		if(xpaths_or_frame_index_to_this_page==null || xpaths_or_frame_index_to_this_page.isEmpty())
+			return null;
+		StringBuilder buf = new StringBuilder();
+		xpaths_or_frame_index_to_this_page.forEach(x->{
+			buf.append(x+"\t");
+		});
+		return buf.toString();
 	}
 
 
